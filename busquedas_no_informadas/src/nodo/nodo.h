@@ -13,6 +13,6 @@ class Nodo {
   friend ostream& operator<<(ostream& os, const Nodo& nodo);
 
  private:
-  unordered_map<int, int> nodo_;
+  unordered_multimap<int, int> nodo_;
   double coste_;
 };
