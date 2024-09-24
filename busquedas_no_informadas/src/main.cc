@@ -16,6 +16,17 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
   // Leemos los datos del fichero;
+  int num_nodos, nodo_inicial = 1;
+  double coste;
+  while (file.eof()) {
+    file >> num_nodos;
+    while (num_nodos--) {
+      file >> coste;
+      if (coste == -1) continue; // Ingnorar los nodos que tengan coste -1
+      Nodo nodo(nodo_inicial, nodo_inicial + 1, coste);
+      
+    }
+  }
 
 
 

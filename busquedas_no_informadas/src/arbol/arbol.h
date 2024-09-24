@@ -14,13 +14,3 @@ class Grafo {
  private:
   unordered_map<int, Nodo> grafo_;
 };
-
-
-
-
-
-
-
-
-
-}
