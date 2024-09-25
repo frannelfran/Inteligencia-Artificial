@@ -27,7 +27,6 @@ Arbol::Arbol(ifstream& file) {
     nodo_hijo = nodo_padre + 1;
     num_nodos = save_num_nodos;
   }
-  cout << arbol_.size() << endl;
 }
 
 /**
