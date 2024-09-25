@@ -14,19 +14,21 @@ Arbol::Arbol(ifstream& file) {
   while (!file.eof()) {
     while (num_nodos--) {
       file >> coste;
-      if (coste > -1) {
+      if (coste >= 0) {
+        if (nodo_padre == nodo_hijo) {
+          nodo_hijo++;
+        }
         Nodo nodo(nodo_padre, nodo_hijo, coste);
         if (!ExisteNodo(nodo)) {
           InsertarNodo(nodo);
         }
-        else {
-          cout << "El nodo ya existe" << endl;
-        }
       }
       nodo_hijo++;
+      cout << num_nodos << endl;
     }
     nodo_padre++;
-    save_num_nodos = num_nodos;
+    nodo_hijo = 1;
+    num_nodos = save_num_nodos;
   }
 }
 
@@ -37,10 +39,11 @@ Arbol::Arbol(ifstream& file) {
 */
 
 bool Arbol::ExisteNodo(const Nodo& nodo) const {
-  auto it = arbol_.find(nodo.GetPadre());
-  while (it != arbol_.end()) {
-    if (it->second.GetHijo() == nodo.GetPadre()) {
-      return true;
+  // Comprobar si hay una arista en la dirección (padre, hijo)
+  auto rangePadreHijo = arbol_.equal_range(nodo.GetPadre());
+  for (auto it = rangePadreHijo.first; it != rangePadreHijo.second; ++it) {
+    if (it->second.GetHijo() == nodo.GetHijo()) {
+      return true; // Arista (padre, hijo) ya existe
     }
   }
   return false;
