@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
   }
   // Leemos los datos del fichero;
   Arbol arbol(file);
+  cout << arbol;
   return EXIT_SUCCESS;
 
 

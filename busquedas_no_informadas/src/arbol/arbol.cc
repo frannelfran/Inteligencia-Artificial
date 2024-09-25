@@ -12,7 +12,6 @@ Arbol::Arbol(ifstream& file) {
   save_num_nodos = num_nodos; // Guardo el numero de nodos para poder reiniciar el contador
 
   while (!file.eof()) {
-    cout << "Nodo padre: " << nodo_padre << endl;
     while (num_nodos--) {
       file >> coste;
       if (coste > -1) {
@@ -26,4 +25,32 @@ Arbol::Arbol(ifstream& file) {
     nodo_padre++;
     save_num_nodos = num_nodos;
   }
+}
+
+/**
+ * @brief Comprueba si un nodo existe en el arbol
+ * @param nodo Nodo a comprobar
+ * @return true si el nodo existe, false en caso contrario
+*/
+
+bool Arbol::ExisteNodo(const Nodo& nodo) const {
+  auto it = arbol_.find(nodo.GetPadre());
+  while (it != arbol_.end()) {
+    if (it->second.GetHijo() == nodo.GetPadre()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * @overload Sobrecarga del operador <<
+*/
+
+ostream& operator<<(ostream& os, const Arbol& arbol) {
+  for (auto it = arbol.arbol_.begin(); it != arbol.arbol_.end(); ++it) {
+    os << it->first << " -> ";
+    os << it->second;
+  }
+  return os;
 }

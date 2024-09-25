@@ -14,13 +14,6 @@ Nodo::Nodo(const int& padre, const int& hijo, const double& coste) {
 }
 
 /**
- * @brief Saber si un nodo ya existe
- * @param nodo Nodo a comprobar
- * @return true si el nodo ya existe, false en caso contrario
-*/
-
-
-/**
  * @overload Sobrecarga del operador <<
 */
 

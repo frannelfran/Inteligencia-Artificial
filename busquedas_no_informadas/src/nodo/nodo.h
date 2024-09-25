@@ -11,9 +11,6 @@ class Nodo {
   // Getters
   int GetPadre() const { return padre_; }
   int GetHijo() const { return hijo_; }
-  
-  // Funciones
-  bool ExisteNodo(const Nodo& nodo) const { return nodo.GetPadre() == hijo_ && nodo.GetHijo() == padre_; } // Saber si un nodo ya existe
 
   friend ostream& operator<<(ostream& os, const Nodo& nodo);
 
