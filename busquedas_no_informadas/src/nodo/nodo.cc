@@ -8,17 +8,23 @@
 */
 
 Nodo::Nodo(const int& padre, const int& hijo, const double& coste) {
-  nodo_.insert({padre, hijo});
+  padre_ = padre;
+  hijo_ = hijo;
   coste_ = coste;
 }
+
+/**
+ * @brief Saber si un nodo ya existe
+ * @param nodo Nodo a comprobar
+ * @return true si el nodo ya existe, false en caso contrario
+*/
+
 
 /**
  * @overload Sobrecarga del operador <<
 */
 
 ostream& operator<<(ostream& os, const Nodo& nodo) {
-  for (auto it = nodo.nodo_.begin(); it != nodo.nodo_.end(); it++) {
-    os << "(" << it->first << ", " << it->second << ") " << nodo.coste_ << endl;
-  }
+  os << "(" << nodo.padre_ << ", " << nodo.hijo_ << ") " << nodo.coste_ << endl;
   return os;
 }

@@ -1,16 +1,20 @@
 #pragma once
-#include "nodo/nodo.h"
+#include "../nodo/nodo.h"
 #include <iostream>
 #include <unordered_map>
+#include <fstream>
 
 using namespace std;
 
-class Grafo {
+class Arbol {
  public:
-  Grafo() = default;
+  // Constructores
+  Arbol() {}
+  Arbol(ifstream&);
 
   void InsertarNodo(const Nodo& nodo);
+  bool ExisteNodo(const Nodo& nodo) const;
 
  private:
-  unordered_map<int, Nodo> grafo_;
+  unordered_multimap<int, Nodo> arbol_;
 };
