@@ -19,6 +19,9 @@ Arbol::Arbol(ifstream& file) {
         if (!ExisteNodo(nodo)) {
           InsertarNodo(nodo);
         }
+        else {
+          cout << "El nodo ya existe" << endl;
+        }
       }
       nodo_hijo++;
     }
