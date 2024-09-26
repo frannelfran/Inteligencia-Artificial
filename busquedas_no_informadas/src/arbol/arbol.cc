@@ -15,7 +15,6 @@ Arbol::Arbol(ifstream& file) {
     while (num_nodos--) {
       if (nodo_hijo > save_num_nodos) break;
       if (nodo_padre == nodo_hijo) nodo_hijo++;
-
       file >> coste;
       if (coste >= 0) {
         Nodo nodo(nodo_padre, nodo_hijo, coste); // Creo un nodo con el padre y el hijo
@@ -27,6 +26,8 @@ Arbol::Arbol(ifstream& file) {
     nodo_hijo = nodo_padre + 1;
     num_nodos = save_num_nodos;
   }
+  this->nodos_ = save_num_nodos; // Guardo el numero de nodos
+  this->aristas_ = arbol_.size(); // Guardo el numero de aristas
 }
 
 /**
