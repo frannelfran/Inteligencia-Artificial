@@ -11,6 +11,7 @@ class Nodo {
   // Getters
   int GetPadre() const { return padre_; }
   int GetHijo() const { return hijo_; }
+  double GetCoste() const { return coste_; }
 
   friend ostream& operator<<(ostream& os, const Nodo& nodo);
 
@@ -18,5 +19,4 @@ class Nodo {
   int padre_;
   int hijo_;
   double coste_;
-  bool visitado_ = false;
 };

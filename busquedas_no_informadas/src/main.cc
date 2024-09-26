@@ -17,9 +17,18 @@ int main(int argc, char* argv[]) {
   }
   // Leemos los datos del fichero;
   Arbol arbol(file);
-  // cout << arbol;
-  // cout << "Numero de nodos: " << arbol.GetNumNodos() << endl;
-  // cout << "Numero de aristas: " << arbol.GetAristas() << endl;
+  ofstream file_out("salida.txt");
+  cout << arbol;
+  arbol.DFS(1, 15, file_out);
+  
+
+
+
+
+
+
+
+
   return 0;
 
 
