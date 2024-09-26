@@ -31,7 +31,7 @@ Arbol::Arbol(ifstream& file) {
 }
 
 /**
- * @brief Busqueda en profundidad
+ * @brief Búsqueda en profundidad
  * @param nodo_origen Nodo de origen
  * @param nodo_destino Nodo de destino
  * @param file Fichero de salida
@@ -106,7 +106,7 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 }
 
 /**
- * @brief Busqueda en amplitud
+ * @brief Búsqueda en amplitud
  * @param nodo_origen Nodo de origen
  * @param nodo_destino Nodo de destino
  * @param file Fichero de salida
@@ -115,12 +115,15 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   queue<int> cola;
   set<int> visitados;
+  map<int, Nodo> camino;
+  double costo_total = 0.0;
   int iteracion = 1;
 
   // Información inicial
   file << "Número de nodos del grafo: " << GetNumNodos() << endl;
   file << "Número de aristas del grafo: " << GetAristas() << endl;
   file << "Vértice origen: " << nodo_origen << endl;
+  file << "Vértice destino: " << nodo_destino << endl;
 
   cola.push(nodo_origen);
   visitados.insert(nodo_origen);
@@ -131,14 +134,40 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
     cola.pop();
     inspeccionados.push_back(nodo_actual);
 
+    // Si encontramos el nodo destino reconstruimos el camino
+    if (nodo_actual == nodo_destino) {
+      stack<int> camino_reverso;
+      for (int temp = nodo_destino; temp != nodo_origen; temp = camino[temp].GetPadre()) {
+        camino_reverso.push(temp);
+        costo_total += camino[temp].GetCoste();
+      }
+      camino_reverso.push(nodo_origen);
+      // Última iteración
+      file << "Iteración " << iteracion << endl;
+      file << "Nodos generados: ";
+      for (int n : generados) file << n << " ";
+      file << endl << "Nodos inspeccionados: ";
+      for (int n : inspeccionados) file << n << " ";
+      file << endl << "Camino: ";
+      while (!camino_reverso.empty()) {
+        file << camino_reverso.top();
+        camino_reverso.pop();
+        if (!camino_reverso.empty()) file << " - ";
+      }
+      file << endl << "Costo: " << costo_total << endl;
+      cout << "Se ha encontrado un camino, para visualizarlo consulte el fichero de salida" << endl;
+      return;
+    }
+    // Obtengo todos los hijos del nodo actual
     auto rango_hijos = arbol_.equal_range(nodo_actual);
-    generados.clear();
+    generados.clear(); // Limpiamos el vector de generados
     for (auto it = rango_hijos.first; it != rango_hijos.second; ++it) {
       Nodo hijo_nodo = it->second;
       int hijo = hijo_nodo.GetHijo();
       if (!visitados.count(hijo)) {
         cola.push(hijo);
         visitados.insert(hijo);
+        camino[hijo] = hijo_nodo;
         generados.push_back(hijo);
       }
     }
@@ -150,29 +179,8 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
     for (int n : inspeccionados) file << n << " ";
     file << endl;
   }
-  // Imprimir parte final
-  file << "camino: ";
-  for (auto it = visitados.begin(); it != visitados.end(); ++it) {
-    file << *it;
-    if (next(it) != visitados.end()) file << " - ";
-  }
-  // Imprimir coste total
-  file << endl << "Coste total: " << visitados.size() << endl;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // Si no se encuentra un camino
+  cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
 }
 
 /**

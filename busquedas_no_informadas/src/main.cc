@@ -13,11 +13,10 @@ int main(int argc, char* argv[]) {
     cout << "No se pudo abrir el fichero" << endl;
     return EXIT_FAILURE;
   }
-  
   // Leemos los datos del fichero;
   Arbol arbol(file);
-  cout << "Opción 1: Algortimo de busqueda en profundidad (DFS)" << endl;
-  cout << "Opción 2: Algortimo de busqueda en amplitud (BFS)" << endl;
+  cout << "Opción 1: Algortimo de búsqueda en profundidad (DFS)" << endl;
+  cout << "Opción 2: Algortimo de búsqueda en amplitud (BFS)" << endl;
   int opcion;
   cout << "Introducir opción: ";
   cin >> opcion;
