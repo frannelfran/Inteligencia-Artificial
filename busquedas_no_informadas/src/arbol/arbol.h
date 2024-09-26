@@ -6,6 +6,7 @@
 #include <stack>
 #include <set>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -21,7 +22,8 @@ class Arbol {
 
   // Funciones
   inline void InsertarNodo(const Nodo& nodo) { arbol_.insert({nodo.GetPadre(), nodo}); }
-  void DFS(int nodo_origen, int nodo_destino, ofstream& file); // Busqueda en profundidad
+  void DFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Busqueda en profundidad
+  void BFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Busqueda en amplitud
 
   friend ostream& operator<<(ostream& os, const Arbol& arbol);
 

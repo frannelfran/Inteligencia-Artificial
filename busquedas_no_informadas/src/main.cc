@@ -17,12 +17,12 @@ int main(int argc, char* argv[]) {
   // Leemos los datos del fichero;
   Arbol arbol(file);
   cout << "Opción 1: Algortimo de busqueda en profundidad (DFS)" << endl;
-  cout << "Opción 2: Algortimo de busqueda en anchura (BFS)" << endl;
+  cout << "Opción 2: Algortimo de busqueda en amplitud (BFS)" << endl;
   int opcion;
   cout << "Introducir opción: ";
   cin >> opcion;
-  if (opcion == 1) arbol.DFS(nodo_origen, nodo_destino, file_out);
-  else if (opcion == 2) cout << "Opción no implementada" << endl;
+  if (opcion == 1) arbol.DFS(nodo_origen, nodo_destino, file_out); // Busqueda en profundidad
+  else if (opcion == 2) arbol.BFS(nodo_origen, nodo_destino, file_out); // Busqueda en amplitud
   else {
     cout << "Opción no válida" << endl;
     return EXIT_FAILURE;

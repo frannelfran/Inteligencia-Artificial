@@ -37,7 +37,7 @@ Arbol::Arbol(ifstream& file) {
  * @param file Fichero de salida
 */
 
-void Arbol::DFS(int nodo_origen, int nodo_destino, ofstream& file) {
+void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   stack<int> pila; // Pila para almacenar los nodos
   set<int> visitados; // Conjunto para almacenar los nodos visitados
   map<int, Nodo> camino; // Mapa para almacenar el camino
@@ -103,6 +103,76 @@ void Arbol::DFS(int nodo_origen, int nodo_destino, ofstream& file) {
     file << endl;
   }
   cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
+}
+
+/**
+ * @brief Busqueda en amplitud
+ * @param nodo_origen Nodo de origen
+ * @param nodo_destino Nodo de destino
+ * @param file Fichero de salida
+*/
+
+void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
+  queue<int> cola;
+  set<int> visitados;
+  int iteracion = 1;
+
+  // Información inicial
+  file << "Número de nodos del grafo: " << GetNumNodos() << endl;
+  file << "Número de aristas del grafo: " << GetAristas() << endl;
+  file << "Vértice origen: " << nodo_origen << endl;
+
+  cola.push(nodo_origen);
+  visitados.insert(nodo_origen);
+  vector<int> generados = {nodo_origen}, inspeccionados;
+  
+  while (!cola.empty()) {
+    int nodo_actual = cola.front();
+    cola.pop();
+    inspeccionados.push_back(nodo_actual);
+
+    auto rango_hijos = arbol_.equal_range(nodo_actual);
+    generados.clear();
+    for (auto it = rango_hijos.first; it != rango_hijos.second; ++it) {
+      Nodo hijo_nodo = it->second;
+      int hijo = hijo_nodo.GetHijo();
+      if (!visitados.count(hijo)) {
+        cola.push(hijo);
+        visitados.insert(hijo);
+        generados.push_back(hijo);
+      }
+    }
+    // Imprimir iteración
+    file << "Iteración " << iteracion++ << endl;
+    file << "Nodos generados: ";
+    for (int n : generados) file << n << " ";
+    file << endl << "Nodos inspeccionados: ";
+    for (int n : inspeccionados) file << n << " ";
+    file << endl;
+  }
+  // Imprimir parte final
+  file << "camino: ";
+  for (auto it = visitados.begin(); it != visitados.end(); ++it) {
+    file << *it;
+    if (next(it) != visitados.end()) file << " - ";
+  }
+  // Imprimir coste total
+  file << endl << "Coste total: " << visitados.size() << endl;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 /**
