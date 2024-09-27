@@ -22,8 +22,8 @@ class Arbol {
 
   // Funciones
   inline void InsertarNodo(const Nodo& nodo) { arbol_.insert({nodo.GetPadre(), nodo}); }
-  void DFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Busqueda en profundidad
-  void BFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Busqueda en amplitud
+  void DFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Búsqueda en profundidad
+  void BFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Búsqueda en amplitud
 
   friend ostream& operator<<(ostream& os, const Arbol& arbol);
 

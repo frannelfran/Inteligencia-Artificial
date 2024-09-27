@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     cout << "Opción no válida" << endl;
     return EXIT_FAILURE;
   }
-  // Cerramos ficheros
+  // Cerramos ficheros y eliminamos el árbol
   file.close();
   file_out.close();
   return 0;
