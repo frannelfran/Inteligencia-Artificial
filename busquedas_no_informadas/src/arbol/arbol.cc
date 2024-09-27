@@ -58,6 +58,7 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
     int nodo_actual = pila.top();
     pila.pop();
     inspeccionados.push_back(nodo_actual);
+    // Si encontramos el nodo destino reconstruimos el camino
     if (nodo_actual == nodo_destino) {
       stack<int> camino_reverso;
       for (int temp = nodo_destino; temp != nodo_origen; temp = camino[temp].GetPadre()) {
@@ -71,8 +72,11 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       file << "Nodos generados: ";
       for (int n : generados) file << n << " ";
         file << endl << "Nodos inspeccionados: ";
-        for (int n : inspeccionados) file << n << " ";
-        file << endl << "Camino: ";
+        for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
+          file << *it << " ";
+          if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
+        }
+        file << "Camino: ";
         while (!camino_reverso.empty()) {
           file << camino_reverso.top();
           camino_reverso.pop();
@@ -82,6 +86,7 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
         cout << "Se ha encontrado un camino, para visualizarlo consulte el fichero de salida" << endl;
       return;
     }
+    // Obtengo todos los hijos del nodo actual
     auto rango_hijos = arbol_.equal_range(nodo_actual);
     generados.clear();
     for (auto it = rango_hijos.first; it != rango_hijos.second; ++it) {
@@ -99,8 +104,10 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
     file << "Nodos generados: ";
     for (int n : generados) file << n << " ";
     file << endl << "Nodos inspeccionados: ";
-    for (int n : inspeccionados) file << n << " ";
-    file << endl;
+    for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
+      file << *it << " ";
+      if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
+    }
   }
   cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
 }
@@ -147,8 +154,11 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       file << "Nodos generados: ";
       for (int n : generados) file << n << " ";
       file << endl << "Nodos inspeccionados: ";
-      for (int n : inspeccionados) file << n << " ";
-      file << endl << "Camino: ";
+      for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
+        file << *it << " ";
+        if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
+      }
+      file << "Camino: ";
       while (!camino_reverso.empty()) {
         file << camino_reverso.top();
         camino_reverso.pop();
@@ -176,8 +186,10 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
     file << "Nodos generados: ";
     for (int n : generados) file << n << " ";
     file << endl << "Nodos inspeccionados: ";
-    for (int n : inspeccionados) file << n << " ";
-    file << endl;
+    for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
+      file << *it << " ";
+      if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
+    }
   }
   // Si no se encuentra un camino
   cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
