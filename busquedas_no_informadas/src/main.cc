@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
   cout << "Opción 1: Algortimo de búsqueda en profundidad (DFS)" << endl;
   cout << "Opción 2: Algortimo de búsqueda en amplitud (BFS)" << endl;
   cout << "Opción 3: Mostrar árbol" << endl;
+  cout << "Opción 4: Salir" << endl;
   int opcion;
   do {
     cout << "Introducir opción: ";
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
     else if (opcion == 4) break; // Salir
     else {
       cout << "Opción no válida" << endl;
-      break; // Volver a pedir la opción si no es válida
+      break;
     }
   } while (opcion == 1 || opcion == 2 || opcion == 3);
   // Cerramos ficheros y eliminamos el árbol
