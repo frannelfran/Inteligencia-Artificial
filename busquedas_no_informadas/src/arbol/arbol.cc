@@ -1,33 +1,26 @@
 #include "arbol.h"
 
 /**
- * @brief Constructor de la clase arbol
- * @param file Fichero con los datos del arbol
+ * @brief Constructor de la clase árbol
+ * @param file Fichero de entrada
 */
 
-Arbol::Arbol(ifstream& file) {
-  int num_nodos, save_num_nodos, nodo_padre = 1, nodo_hijo = 2;
-  double coste;
-  file >> num_nodos;
-  save_num_nodos = num_nodos; // Guardo el numero de nodos para poder reiniciar el contador
-
-  while (!file.eof()) {
-    while (num_nodos--) {
-      if (nodo_hijo > save_num_nodos) break;
-      if (nodo_padre == nodo_hijo) nodo_hijo++;
-      file >> coste;
-      if (coste >= 0) {
-        Nodo nodo(nodo_padre, nodo_hijo, coste); // Creo un nodo con el padre y el hijo
-        InsertarNodo(nodo);
+Arbol::Arbol(const vector<vector<double>>& matriz_coste) {
+  for (int i = 0; i < matriz_coste.size(); i++) {
+    for (int j = i + 1; j < matriz_coste.size(); j++) {
+      if (matriz_coste[i][j] != 0) { // si el coste != -1 cambiado por 0
+        Nodo nodo_ida(i + 1), nodo_vuelta(j + 1);
+        Arista arista_ida(i + 1, j + 1, matriz_coste[i][j]), arista_vuelta(j + 1, i + 1, matriz_coste[i][j]);
+        // Insertamos los nodos en el árbol
+        InsertarNodo(nodo_ida, arista_ida);
+        InsertarNodo(nodo_vuelta, arista_vuelta);
+        // Insertamnos los hijos a cada nodo
+        nodo_ida.AddHijo(j + 1);
       }
-      nodo_hijo++;
     }
-    nodo_padre++;
-    nodo_hijo = nodo_padre + 1;
-    num_nodos = save_num_nodos;
   }
-  this->nodos_ = save_num_nodos; // Guardo el numero de nodos
-  this->aristas_ = arbol_.size(); // Guardo el numero de aristas
+  this->num_aristas_ = arbol_.size() / 2; // Número de aristas del grafo
+  this->num_nodos_ = matriz_coste.size(); // Número de nodos del grafo
 }
 
 /**
@@ -36,80 +29,84 @@ Arbol::Arbol(ifstream& file) {
  * @param nodo_destino Nodo de destino
  * @param file Fichero de salida
 */
-
+ 
 void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   stack<int> pila; // Pila para almacenar los nodos
-  set<int> visitados; // Conjunto para almacenar los nodos visitados
-  map<int, Nodo> camino; // Mapa para almacenar el camino
+  set<int> visitados, generados = {nodo_origen}; // Conjunto para almacenar los nodos visitados
+  map<int, Arista> camino; // Mapa para almacenar el camino
+  vector<int> inspeccionados; // Vector para almacenar los nodos inspeccionados
   double costo_total = 0.0;
   int iteracion = 1;
 
-  // Información inicial
-  file << "Número de nodos del grafo: " << GetNumNodos() << endl;
-  file << "Número de aristas del grafo: " << GetAristas() << endl;
+  // Muestro la información inicial en el fichero
+  file << "Número de nodos del grafo: " << this->num_nodos_ << endl;
+  file << "Número de aristas del grafo: " << this->num_aristas_ << endl;
   file << "Vértice origen: " << nodo_origen << endl;
   file << "Vértice destino: " << nodo_destino << endl;
 
+  // Inserto la raíz en la pila y en el conjunto de visitados
   pila.push(nodo_origen);
   visitados.insert(nodo_origen);
-  vector<int> generados = {nodo_origen}, inspeccionados;
 
   while (!pila.empty()) {
-    int nodo_actual = pila.top();
-    pila.pop();
+    int nodo_actual = pila.top(); // Obtenemos el nodo actual
+    pila.pop(); // Lo extraemos
     inspeccionados.push_back(nodo_actual);
-    // Si encontramos el nodo destino reconstruimos el camino
+    // Si encontramos el nodo destino
     if (nodo_actual == nodo_destino) {
-      stack<int> camino_reverso;
-      for (int temp = nodo_destino; temp != nodo_origen; temp = camino[temp].GetPadre()) {
-        camino_reverso.push(temp);
-        costo_total += camino[temp].GetCoste();
+      stack<int> camino_inverso; // Pila para almacenar el camino
+      // Reconstruyo el camino desde el nodo destino hasta el origen
+      for (int it = nodo_destino; it != nodo_origen; it = camino[it].GetOrigen()) {
+        camino_inverso.push(it);
+        costo_total += camino[it].GetCoste();
       }
-      camino_reverso.push(nodo_origen);
-
-      // Última iteración
-      file << "Iteración " << iteracion << endl;
+      camino_inverso.push(nodo_origen); // Inserto el nodo origen
+      // Muestro el camino en el fichero
+      file << "Iteración " << iteracion << ": " << endl;
       file << "Nodos generados: ";
-      for (int n : generados) file << n << " ";
-        file << endl << "Nodos inspeccionados: ";
-        for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
-          file << *it << " ";
-          if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
-        }
-        file << "Camino: ";
-        while (!camino_reverso.empty()) {
-          file << camino_reverso.top();
-          camino_reverso.pop();
-          if (!camino_reverso.empty()) file << " - ";
-        }
-        file << endl << "Costo: " << costo_total << endl;
-        cout << "Se ha encontrado un camino, para visualizarlo consulte el fichero de salida" << endl;
+      for (int nodo : generados) file << nodo << " ";
+      file << endl << "Nodos inspeccionados: ";
+      for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
+        file << *it << " ";
+      }
+      file << endl << "------------------------------------" << endl;
+      // Mostramos el camino en el fichero
+      file << "Camino: ";
+      while (!camino_inverso.empty()) {
+        file << camino_inverso.top();
+        camino_inverso.pop();
+        if (!camino_inverso.empty()) file << " - ";
+      }
+      // Mostramos el coste total
+      file << endl << "Coste total: " << costo_total << endl;
+      cout << "Camino encontrado" << endl;
       return;
     }
-    // Obtengo todos los hijos del nodo actual
-    auto rango_hijos = arbol_.equal_range(nodo_actual);
+
+    // Obtengo los hijos del nodo actual
+    auto range_hijos = arbol_.equal_range(Nodo(nodo_actual));
     generados.clear();
-    for (auto it = rango_hijos.first; it != rango_hijos.second; ++it) {
-      Nodo hijo_nodo = it->second;
-      int hijo = hijo_nodo.GetHijo();
-      if (!visitados.count(hijo)) {
+    for (auto it = range_hijos.second; it != range_hijos.first;) {
+      --it;
+      int hijo = it->second.GetDestino();
+      if (!visitados.count(hijo)) { // Si no ha sido visitado
         pila.push(hijo);
-        visitados.insert(hijo);
-        camino[hijo] = hijo_nodo;
-        generados.push_back(hijo);
+        generados.insert(hijo); // Lo genero
+        visitados.insert(hijo); // Lo visito
+        camino[hijo] = it->second; // Almaceno el camino
       }
     }
-    // Imprimir iteración
-    file << "Iteración " << iteracion++ << endl;
-    file << "Nodos generados: ";
-    for (int n : generados) file << n << " ";
+    // Muestro la información en el fichero
+    file << "Iteración " << iteracion++ << ": ";
+    file << endl << "Nodos generados: ";
+    for (int nodo : generados) file << nodo << " ";
     file << endl << "Nodos inspeccionados: ";
     for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
       file << *it << " ";
-      if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
     }
+    file << endl << "------------------------------------" << endl;
   }
-  cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
+  cout << "Camino no encontrado" << endl;
 }
 
 /**
@@ -120,89 +117,90 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 */
 
 void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
-  queue<int> cola;
-  set<int> visitados;
-  map<int, Nodo> camino;
+  queue<int> pila; // Cola para almacenar los nodos
+  set<int> visitados, generados = {nodo_origen}; // Conjunto para almacenar los nodos visitados
+  map<int, Arista> camino; // Mapa para almacenar el camino
+  vector<int> inspeccionados; // Vector para almacenar los nodos inspeccionados
   double costo_total = 0.0;
   int iteracion = 1;
 
-  // Información inicial
-  file << "Número de nodos del grafo: " << GetNumNodos() << endl;
-  file << "Número de aristas del grafo: " << GetAristas() << endl;
+  // Muestro la información inicial en el fichero
+  file << "Número de nodos del grafo: " << this->num_nodos_ << endl;
+  file << "Número de aristas del grafo: " << this->num_aristas_ << endl;
   file << "Vértice origen: " << nodo_origen << endl;
   file << "Vértice destino: " << nodo_destino << endl;
 
-  cola.push(nodo_origen);
+  // Inserto la raíz en la pila y en el conjunto de visitados
+  pila.push(nodo_origen);
   visitados.insert(nodo_origen);
-  vector<int> generados = {nodo_origen}, inspeccionados;
-  
-  while (!cola.empty()) {
-    int nodo_actual = cola.front();
-    cola.pop();
-    inspeccionados.push_back(nodo_actual);
 
-    // Si encontramos el nodo destino reconstruimos el camino
+  while (!pila.empty()) {
+    int nodo_actual = pila.front(); // Obtenemos el nodo actual
+    pila.pop(); // Lo extraemos
+    inspeccionados.push_back(nodo_actual);
+    // Si encontramos el nodo destino
     if (nodo_actual == nodo_destino) {
-      stack<int> camino_reverso;
-      for (int temp = nodo_destino; temp != nodo_origen; temp = camino[temp].GetPadre()) {
-        camino_reverso.push(temp);
-        costo_total += camino[temp].GetCoste();
+      stack<int> camino_inverso; // Pila para almacenar el camino
+      // Reconstruyo el camino desde el nodo destino hasta el origen
+      for (int it = nodo_destino; it != nodo_origen; it = camino[it].GetOrigen()) {
+        camino_inverso.push(it);
+        costo_total += camino[it].GetCoste();
       }
-      camino_reverso.push(nodo_origen);
-      // Última iteración
-      file << "Iteración " << iteracion << endl;
+      camino_inverso.push(nodo_origen); // Inserto el nodo origen
+      // Muestro el camino en el fichero
+      file << "Iteración " << iteracion << ": " << endl;
       file << "Nodos generados: ";
-      for (int n : generados) file << n << " ";
+      for (int nodo : generados) file << nodo << " ";
       file << endl << "Nodos inspeccionados: ";
       for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
         file << *it << " ";
-        if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
       }
+      file << endl << "------------------------------------" << endl;
+      // Mostramos el camino en el fichero
       file << "Camino: ";
-      while (!camino_reverso.empty()) {
-        file << camino_reverso.top();
-        camino_reverso.pop();
-        if (!camino_reverso.empty()) file << " - ";
+      while (!camino_inverso.empty()) {
+        file << camino_inverso.top();
+        camino_inverso.pop();
+        if (!camino_inverso.empty()) file << " - ";
       }
-      file << endl << "Costo: " << costo_total << endl;
-      cout << "Se ha encontrado un camino, para visualizarlo consulte el fichero de salida" << endl;
+      // Mostramos el coste total
+      file << endl << "Coste total: " << costo_total << endl;
+      cout << "Camino encontrado" << endl;
       return;
     }
-    // Obtengo todos los hijos del nodo actual
-    auto rango_hijos = arbol_.equal_range(nodo_actual);
-    generados.clear(); // Limpiamos el vector de generados
-    for (auto it = rango_hijos.first; it != rango_hijos.second; ++it) {
-      Nodo hijo_nodo = it->second;
-      int hijo = hijo_nodo.GetHijo();
-      if (!visitados.count(hijo)) {
-        cola.push(hijo);
-        visitados.insert(hijo);
-        camino[hijo] = hijo_nodo;
-        generados.push_back(hijo);
+
+    // Obtengo los hijos del nodo actual
+    auto range_hijos = arbol_.equal_range(Nodo(nodo_actual));
+    generados.clear();
+    for (auto it = range_hijos.first; it != range_hijos.second; it++) {
+      int hijo = it->second.GetDestino();
+      if (!visitados.count(hijo)) { // Si no ha sido visitado
+        pila.push(hijo);
+        generados.insert(hijo); // Lo genero
+        visitados.insert(hijo); // Lo visito
+        camino[hijo] = it->second; // Almaceno el camino
       }
     }
-    // Imprimir iteración
-    file << "Iteración " << iteracion++ << endl;
-    file << "Nodos generados: ";
-    for (int n : generados) file << n << " ";
+    // Muestro la información en el fichero
+    file << "Iteración " << iteracion++ << ": ";
+    file << endl << "Nodos generados: ";
+    for (int nodo : generados) file << nodo << " ";
     file << endl << "Nodos inspeccionados: ";
     for (auto it = inspeccionados.begin(); it != inspeccionados.end(); it++) {
       file << *it << " ";
-      if (it == inspeccionados.end() - 1) file << endl << "------------------------------------" << endl;
     }
+    file << endl << "------------------------------------" << endl;
   }
-  // Si no se encuentra un camino
-  cout << "No se encontró un camino entre " << nodo_origen << " y " << nodo_destino << endl;
+  cout << "Camino no encontrado" << endl;
 }
 
 /**
- * @overload Sobrecarga del operador <<
+ * @overload Sobrecarga del operador de salida
 */
 
 ostream& operator<<(ostream& os, const Arbol& arbol) {
-  for (auto it = arbol.arbol_.begin(); it != arbol.arbol_.end(); ++it) {
-    os << it->first << " -> ";
-    os << it->second;
+  for (auto it = arbol.arbol_.begin(); it != arbol.arbol_.end(); it++) {
+    os << it->first.GetId() << " -> " << it->second.GetDestino() << " " << it->second.GetCoste() << endl;
   }
   return os;
 }

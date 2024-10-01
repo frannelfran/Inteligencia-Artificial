@@ -1,34 +1,32 @@
 #pragma once
 #include "../nodo/nodo.h"
-#include <iostream>
+#include "../arista/arista.h"
 #include <fstream>
 #include <map>
-#include <stack>
 #include <set>
-#include <vector>
+#include <stack>
 #include <queue>
+#include <vector>
+
+
 
 using namespace std;
 
 class Arbol {
  public:
-  // Constructores
-  Arbol() {}
-  Arbol(ifstream&);
+  Arbol() = default;
+  Arbol(const vector<vector<double>>&);
 
-  // Getters
-  int GetAristas() const { return aristas_; }
-  int GetNumNodos() const { return nodos_; }
+  void InsertarNodo(const Nodo& nodo, const Arista& arista) { arbol_.insert({nodo, arista}); } // Método para insertar un nodo en el árbol
 
-  // Funciones
-  inline void InsertarNodo(const Nodo& nodo) { arbol_.insert({nodo.GetPadre(), nodo}); }
   void DFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Búsqueda en profundidad
   void BFS(const int nodo_origen, const int nodo_destino, ofstream& file); // Búsqueda en amplitud
-
+  
+  // Sobrecarga del operador de salida
   friend ostream& operator<<(ostream& os, const Arbol& arbol);
 
  private:
-  multimap<int, Nodo> arbol_;
-  int aristas_;
-  int nodos_;
+  multimap<Nodo, Arista> arbol_;
+  int num_nodos_;
+  int num_aristas_;
 };
