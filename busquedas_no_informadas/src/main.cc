@@ -21,20 +21,16 @@ int main(int argc, char* argv[]) {
   cout << "Opción 1: Algortimo de búsqueda en profundidad (DFS)" << endl;
   cout << "Opción 2: Algortimo de búsqueda en amplitud (BFS)" << endl;
   cout << "Opción 3: Mostrar árbol" << endl;
-  cout << "Opción 4: Salir" << endl;
   int opcion;
-  do {
-    cout << "Introducir opción: ";
-    cin >> opcion;
-    if (opcion == 1) arbol.DFS(nodo_origen, nodo_destino, file_out); // Busqueda en profundidad
-    else if (opcion == 2) arbol.BFS(nodo_origen, nodo_destino, file_out); // Busqueda en amplitud
-    else if (opcion == 3) cout << arbol; // Mostrar árbol
-    else if (opcion == 4) break; // Salir
-    else {
-      cout << "Opción no válida" << endl;
-      break;
-    }
-  } while (opcion == 1 || opcion == 2 || opcion == 3);
+  cout << "Introducir opción: ";
+  cin >> opcion;
+  if (opcion == 1) arbol.DFS(nodo_origen, nodo_destino, file_out); // Busqueda en profundidad
+  else if (opcion == 2) arbol.BFS(nodo_origen, nodo_destino, file_out); // Busqueda en amplitud
+  else if (opcion == 3) cout << arbol; // Mostrar árbol
+  else {
+    cout << "Opción no válida" << endl;
+    return EXIT_FAILURE;
+  }
   // Cerramos ficheros y eliminamos el árbol
   file.close();
   file_out.close();
