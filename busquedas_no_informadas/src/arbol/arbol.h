@@ -8,8 +8,6 @@
 #include <queue>
 #include <vector>
 
-
-
 using namespace std;
 
 class Arbol {
