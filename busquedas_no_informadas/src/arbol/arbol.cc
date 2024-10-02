@@ -32,9 +32,9 @@ Arbol::Arbol(const vector<vector<double>>& matriz_coste) {
  
 void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   stack<int> pila; // Pila para almacenar los nodos
-  set<int> visitados, generados = {nodo_origen}; // Conjunto para almacenar los nodos visitados
+  set<int> visitados; // Conjunto para almacenar los nodos visitados
   map<int, Arista> camino; // Mapa para almacenar el camino
-  vector<int> inspeccionados; // Vector para almacenar los nodos inspeccionados
+  vector<int> inspeccionados, generados = {nodo_origen}; // Vector para almacenar los nodos inspeccionados
   double costo_total = 0.0;
   int iteracion = 1;
 
@@ -85,13 +85,12 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 
     // Obtengo los hijos del nodo actual
     auto range_hijos = arbol_.equal_range(Nodo(nodo_actual));
-    generados.clear();
     for (auto it = range_hijos.second; it != range_hijos.first;) {
       --it;
       int hijo = it->second.GetDestino();
       if (!visitados.count(hijo)) { // Si no ha sido visitado
         pila.push(hijo);
-        generados.insert(hijo); // Lo genero
+        generados.push_back(hijo); // Lo genero
         visitados.insert(hijo); // Lo visito
         camino[hijo] = it->second; // Almaceno el camino
       }
@@ -118,9 +117,9 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 
 void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   queue<int> pila; // Cola para almacenar los nodos
-  set<int> visitados, generados = {nodo_origen}; // Conjunto para almacenar los nodos visitados
+  set<int> visitados; // Conjunto para almacenar los nodos visitados
   map<int, Arista> camino; // Mapa para almacenar el camino
-  vector<int> inspeccionados; // Vector para almacenar los nodos inspeccionados
+  vector<int> inspeccionados, generados = {nodo_origen}; // Vector para almacenar los nodos inspeccionados
   double costo_total = 0.0;
   int iteracion = 1;
 
@@ -171,12 +170,12 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 
     // Obtengo los hijos del nodo actual
     auto range_hijos = arbol_.equal_range(Nodo(nodo_actual));
-    generados.clear();
+    // generados.clear();
     for (auto it = range_hijos.first; it != range_hijos.second; it++) {
       int hijo = it->second.GetDestino();
       if (!visitados.count(hijo)) { // Si no ha sido visitado
         pila.push(hijo);
-        generados.insert(hijo); // Lo genero
+        generados.push_back(hijo); // Lo genero
         visitados.insert(hijo); // Lo visito
         camino[hijo] = it->second; // Almaceno el camino
       }
