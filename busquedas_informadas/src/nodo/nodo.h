@@ -7,7 +7,7 @@ using namespace std;
 class Nodo {
  public:
   Nodo() = default;
-  Nodo(Posicion posicion, int euristica, int costo_acumulado, int costo_total) : posicion_(posicion), euristica_(euristica), costo_acumulado_(costo_acumulado), costo_total_(costo_total) {}
+  Nodo(Posicion posicion, int estado) : posicion_(posicion), estado_(estado) {}
 
   // Getters
   Posicion GetPosicion() const { return posicion_; }
