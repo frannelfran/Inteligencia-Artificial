@@ -21,6 +21,7 @@ class Nodo {
 
  private:
   Posicion posicion_;
+  int estado_;
   int euristica_; // h(n)
   int costo_acumulado_; // g(n)
   int costo_total_; // f(n)
