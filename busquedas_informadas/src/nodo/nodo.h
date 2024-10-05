@@ -12,17 +12,18 @@ class Nodo {
   Nodo(Posicion posicion, int estado) : posicion_(posicion), estado_(estado) {}
 
   // Setters
+  void SetEstado(const int& estado) { estado_ = estado; } // Establece el estado del nodo
   void SetHX(const int& h_x) { h_x_ = h_x; } // Establece la heurística del nodo
   void SetGX(const int& g_x) { g_x_ = g_x; } // Establece el costo del camino desde el nodo actual hasta el nodo objetivo
   void SetFX(const int& f_x) { f_x_ = f_x; } // Establece el costo total del nodo
 
   // Getters
   int GetEstado() const { return estado_; } // Retorna el estado del nodo
-  const Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
+  Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Nodo& nodo) {
-    os << nodo.estado_ << " ";
+    os << nodo.estado_ << " " << nodo.h_x_;   
     return os;
   }
 

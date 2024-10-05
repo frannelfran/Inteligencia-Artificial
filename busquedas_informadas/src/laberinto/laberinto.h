@@ -13,6 +13,7 @@ class Laberinto {
 
   // Métodos
   void EstablecerHeuristica(); // Establece la heurística de los nodos del laberinto
+  void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
 
 
 
@@ -21,6 +22,6 @@ class Laberinto {
 
  private:
   vector<vector<Nodo>> laberinto_;
-  Posicion entrada_;
-  Posicion salida_;
+  Posicion entrada_; // Entrada del laberinto
+  Posicion salida_; // Salida del laberinto
 };

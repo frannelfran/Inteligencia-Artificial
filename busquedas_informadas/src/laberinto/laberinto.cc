@@ -35,6 +35,31 @@ void Laberinto::EstablecerHeuristica() {
   }
 }
 
+/**
+ * @brief Cambia la entrada y salida del laberinto
+ * @param entrada Nueva posición de la entrada
+ * @param salida Nueva posición de la salida
+*/
+
+void Laberinto::CambiarEntradaSalida(const Posicion& entrada, const Posicion& salida) {
+  // Compruebo que las posiciones sean válidas
+  if (entrada.GetX() < 0 || entrada.GetX() > laberinto_.size() || entrada.GetY() < 0 || entrada.GetY() > laberinto_[0].size()) {
+    cout << "Posición de entrada inválida: Fuera de rango" << endl;
+    return;
+  }
+  // Establezco como 1 la entrada y salida anteriores
+  laberinto_[entrada_.GetX()][entrada_.GetY()].SetEstado(1);
+  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado(1);
+  // Establezco la nueva entrada y salida
+  laberinto_[entrada.GetX()][entrada.GetY()].SetEstado(3);
+  laberinto_[salida.GetX()][salida.GetY()].SetEstado(4);
+  // Actualizo la entrada y salida
+  this->entrada_ = entrada;
+  this->salida_ = salida;
+  // Establezco la heurística de los nodos
+  EstablecerHeuristica();
+}
+
 ostream& operator<<(ostream& os, const Laberinto& laberinto) {
   for (int i = 0; i < laberinto.laberinto_.size(); i++) {
     for (int j = 0; j < laberinto.laberinto_[i].size(); j++) {
