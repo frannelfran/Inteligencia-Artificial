@@ -18,7 +18,7 @@ Laberinto::Laberinto(ifstream& file) {
       else if (estado == 4) this->salida_ = laberinto_[i][j].GetPosicion();
     }
   }
-  EstablecerHeuristica();
+  EstablecerHeuristica(); // Establecer la heurística de los nodos
 }
 
 /**
