@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 
 using namespace std;
@@ -13,7 +14,7 @@ class Posicion {
   int GetY() const { return y_; }
 
   // Sobrecarga de operadores
-  friend ostream& operator<(ostream& os, const Posicion& posicion) {
+  friend ostream& operator<<(ostream& os, const Posicion& posicion) {
     os << "(" << posicion.x_ << ", " << posicion.y_ << ")";
     return os;
   }
