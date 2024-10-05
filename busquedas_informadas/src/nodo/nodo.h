@@ -1,3 +1,4 @@
+#pragma once
 #include "../posicion/posicion.h"
 #include <iostream>
 #include <vector>
@@ -6,24 +7,31 @@ using namespace std;
 
 class Nodo {
  public:
+  // Constructores
   Nodo() = default;
   Nodo(Posicion posicion, int estado) : posicion_(posicion), estado_(estado) {}
 
-  // Getters
-  Posicion GetPosicion() const { return posicion_; }
-  int GetEuristica() const { return euristica_; }
-  int GetCostoAcumulado() const { return costo_acumulado_; } // g(n)
-  int GetCostoTotal() const { return costo_total_; } // f(n)
-
   // Setters
-  void SetCostoAcumulado(int costo_acumulado) { costo_acumulado_ = costo_acumulado; } // g(n)
-  void SetCostoTotal(int costo_total) { costo_total_ = costo_total; } // f(n)
+  void SetHX(const int& h_x) { h_x_ = h_x; } // Establece la heurística del nodo
+  void SetGX(const int& g_x) { g_x_ = g_x; } // Establece el costo del camino desde el nodo actual hasta el nodo objetivo
+  void SetFX(const int& f_x) { f_x_ = f_x; } // Establece el costo total del nodo
+
+  // Getters
+  int GetEstado() const { return estado_; } // Retorna el estado del nodo
+  const Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
+
+  // Sobrecarga de operadores
+  friend ostream& operator<<(ostream& os, const Nodo& nodo) {
+    os << nodo.estado_ << " ";
+    return os;
+  }
 
  private:
+  int estado_; // Estado del nodo
   Posicion posicion_;
-  int estado_;
-  int euristica_; // h(n)
-  int costo_acumulado_; // g(n)
-  int costo_total_; // f(n)
-  vector<int> hijos_;
+  vector<Nodo> hijos_; // Hijos del nodo
+  int costo_camino_; // Costo del camino desde el nodo raíz hasta el nodo actual
+  int h_x_; // Heurística del nodo
+  int g_x_; // Costo del camino desde el nodo actual hasta el nodo objetivo
+  int f_x_; // Costo total del nodo
 };
