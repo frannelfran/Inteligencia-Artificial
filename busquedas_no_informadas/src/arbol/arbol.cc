@@ -43,6 +43,11 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   file << "Número de aristas del grafo: " << this->num_aristas_ << endl;
   file << "Vértice origen: " << nodo_origen << endl;
   file << "Vértice destino: " << nodo_destino << endl;
+  file << "------------------------------------" << endl;
+  file << "Iteración " << iteracion << ": " << endl;
+  file << "Nodos generados: " << nodo_origen << " ";
+  file << endl << "Nodos inspeccionados: " << "-" << endl;
+  file << "------------------------------------" << endl;
 
   // Inserto la raíz en la pila y en el conjunto de visitados
   pila.push(nodo_origen);
@@ -96,7 +101,7 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       }
     }
     // Muestro la información en el fichero
-    file << "Iteración " << iteracion++ << ": ";
+    file << "Iteración " << ++iteracion << ": ";
     file << endl << "Nodos generados: ";
     for (int nodo : generados) file << nodo << " ";
     file << endl << "Nodos inspeccionados: ";
@@ -128,6 +133,11 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
   file << "Número de aristas del grafo: " << this->num_aristas_ << endl;
   file << "Vértice origen: " << nodo_origen << endl;
   file << "Vértice destino: " << nodo_destino << endl;
+  file << "------------------------------------" << endl;
+  file << "Iteración " << iteracion << ": " << endl;
+  file << "Nodos generados: " << nodo_origen << " ";
+  file << endl << "Nodos inspeccionados: " << "-" << endl;
+  file << "------------------------------------" << endl;
 
   // Inserto la raíz en la pila y en el conjunto de visitados
   pila.push(nodo_origen);
@@ -170,7 +180,6 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
 
     // Obtengo los hijos del nodo actual
     auto range_hijos = arbol_.equal_range(Nodo(nodo_actual));
-    // generados.clear();
     for (auto it = range_hijos.first; it != range_hijos.second; it++) {
       int hijo = it->second.GetDestino();
       if (!visitados.count(hijo)) { // Si no ha sido visitado
@@ -181,7 +190,7 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       }
     }
     // Muestro la información en el fichero
-    file << "Iteración " << iteracion++ << ": ";
+    file << "Iteración " << ++iteracion << ": ";
     file << endl << "Nodos generados: ";
     for (int nodo : generados) file << nodo << " ";
     file << endl << "Nodos inspeccionados: ";
