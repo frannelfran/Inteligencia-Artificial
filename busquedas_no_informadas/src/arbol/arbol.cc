@@ -67,7 +67,7 @@ void Arbol::DFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       }
       camino_inverso.push(nodo_origen); // Inserto el nodo origen
       // Muestro el camino en el fichero
-      file << "Iteración " << iteracion << ": " << endl;
+      file << "Iteración " << ++iteracion << ": " << endl;
       file << "Nodos generados: ";
       for (int nodo : generados) file << nodo << " ";
       file << endl << "Nodos inspeccionados: ";
@@ -157,7 +157,7 @@ void Arbol::BFS(const int nodo_origen, const int nodo_destino, ofstream& file) {
       }
       camino_inverso.push(nodo_origen); // Inserto el nodo origen
       // Muestro el camino en el fichero
-      file << "Iteración " << iteracion << ": " << endl;
+      file << "Iteración " << ++iteracion << ": " << endl;
       file << "Nodos generados: ";
       for (int nodo : generados) file << nodo << " ";
       file << endl << "Nodos inspeccionados: ";
