@@ -1,6 +1,6 @@
 main:
 	@echo "Compilando ficheros..."
-	g++ -std=c++20 src/main.cc src/nodo/nodo.cc src/laberinto/laberinto.cc -o busqueda_informada
+	g++ -std=c++20 src/main.cc src/laberinto/laberinto.cc -o busqueda_informada
 
 .PHONY: clean
 
