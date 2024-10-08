@@ -5,8 +5,6 @@
 #include <list>
 #include <vector>
 
-class Laberinto;
-
 using namespace std;
 
 class Nodo {
@@ -17,15 +15,16 @@ class Nodo {
 
   // Setters
   void SetEstado(const int& estado) { estado_ = estado; } // Establece el estado del nodo
-  void SetHX(const int& h_x) { h_x_ = h_x; } // Establece la heurística del nodo
-  void SetGX(const int& g_x) { g_x_ = g_x; } // Establece el costo del camino desde el nodo actual hasta el nodo objetivo
-  void SetFX(const int& f_x) { f_x_ = f_x; } // Establece el costo total del nodo
+  void SetHN(const int& h_n) { h_n_ = h_n; } // Establece la heurística del nodo
+  void SetGN(const int& g_n) { g_n_ = g_n; } // Establece el costo del camino desde el nodo actual hasta el nodo objetivo
+  void SetFN(const int& f_n) { f_n_ = f_n; } // Establece el costo total del nodo
 
   // Getters
   int GetEstado() const { return estado_; } // Retorna el estado del nodo
-  int GetFX() const { return f_x_; } // Retorna el costo total del nodo
+  int GetFN() const { return f_n_; } // Retorna el costo total del nodo
+  int GetGN() const { return g_n_; } // Retorna el costo del camino desde el nodo actual hasta el nodo objetivo
+  int GetHN() const { return h_n_; } // Retorna la heurística del nodo
   Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
-  list<Nodo> GetVecinos(const Laberinto&) const; // Retorna los nodos vecinos del nodo
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Nodo& nodo) {
@@ -40,7 +39,7 @@ class Nodo {
   int estado_; // Estado del nodo
   Posicion posicion_;
   int costo_camino_; // Costo del camino desde el nodo raíz hasta el nodo actual
-  int h_x_; // Heurística del nodo
-  int g_x_; // Costo del camino desde el nodo actual hasta el nodo objetivo
-  int f_x_; // Costo total del nodo
+  int h_n_; // Heurística del nodo
+  int g_n_; // Costo del camino desde el nodo actual hasta el nodo objetivo
+  int f_n_; // Costo total del nodo
 };
