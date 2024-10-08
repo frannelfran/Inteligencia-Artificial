@@ -29,7 +29,7 @@ void Laberinto::EstablecerHeuristica() {
   for (int i = 0; i < laberinto_.size(); i++) {
     for (int j = 0; j < laberinto_[i].size(); j++) {
       if (laberinto_[i][j].GetEstado() == 0 || laberinto_[i][j].GetEstado() == 3 || laberinto_[i][j].GetEstado() == 4) {
-        laberinto_[i][j].SetHX((abs(salida_.GetX() - i) + abs(salida_.GetY() - j)) * 3);
+        laberinto_[i][j].SetHN((abs(salida_.GetX() - i) + abs(salida_.GetY() - j)) * 3);
       }
     }
   }
@@ -76,7 +76,7 @@ void Laberinto::BusquedaAEstrella() {
     // Obtenemos el nodo actual a partir del nodo con costo de f(x) más bajo
     actual = abierta.front();
     for (auto nodo : abierta) {
-      if (nodo.GetFX() < actual.GetFX()) {
+      if (nodo.GetFN() < actual.GetFN()) {
         actual = nodo;
       }
     }
@@ -91,13 +91,19 @@ void Laberinto::BusquedaAEstrella() {
       break;
     }
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
-    list<Nodo> vecinos = actual.GetVecinos(*this);
+    list<Nodo> vecinos = GetVecinos(actual);
+    // Recorremos la lista de nodos adyacentes
+    for (auto vecino : vecinos) {
+      if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() && vecino.GetEstado() != 1) {
+        continue;
+      }
+      // Calculamos el costo del camino desde el nodo inicial hasta el nodo actual
+      EstablecerCostoCamino(vecino); // Para la g(n)
+      // Calculamos el costo total del nodo
+      vecino.SetFN(vecino.GetGN() + vecino.GetHN());
+      cout << vecino.GetPosicion() << " " << vecino.GetFN() << endl;
+    }
     
-    
-
-
-
-
 
 
 
@@ -112,6 +118,49 @@ void Laberinto::BusquedaAEstrella() {
 
 
 
+}
+
+/**
+ * @brief Establece el costo del camino de los nodos del laberinto
+ * @param nodo Nodo a establecer el costo del camino
+*/
+
+void Laberinto::EstablecerCostoCamino(Nodo& nodo) {
+  Posicion pos = nodo.GetPosicion();
+  // Comprobamos si las posiciones son diagonales
+  
+}
+
+/**
+ * @brief Retorna los nodos vecinos de un nodo
+ * @param nodo Nodo del que se quieren obtener los vecinosç
+ * @return Lista de nodos vecinos
+*/
+
+list<Nodo> Laberinto::GetVecinos(Nodo nodo) const {
+  list<Nodo> vecinos; // Lista de nodos vecinos
+  Posicion pos = nodo.GetPosicion(); // Posición del nodo actual
+  int x = pos.GetX(); // Coordenada x del nodo actual
+  int y = pos.GetY(); // Coordenada y del nodo actual
+
+  // Comprobar las posiciones adyacentes al nodo actual
+  vector<Posicion> posiciones { // Todas las posibilidades
+    Posicion(x - 1, y), // Arriba
+    Posicion(x + 1, y), // Abajo
+    Posicion(x, y - 1), // Izquierda
+    Posicion(x, y + 1), // Derecha
+    Posicion(x - 1, y - 1), // Arriba izquierda
+    Posicion(x - 1, y + 1), // Arriba derecha
+    Posicion(x + 1, y - 1), // Abajo izquierda
+    Posicion(x + 1, y + 1) // Abajo derecha
+  };
+
+  for (auto& p : posiciones) {
+    if (EsPosicionValida(p) && !EsPared(p)) {
+      vecinos.push_back(laberinto_[p.GetX()][p.GetY()]);
+    }
+  }
+  return vecinos;
 }
 
 /**

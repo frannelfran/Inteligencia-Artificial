@@ -6,8 +6,6 @@
 #include <cmath>
 #include <list>
 
-class Nodo;
-
 class Laberinto {
  public:
   // Constructores
@@ -16,12 +14,17 @@ class Laberinto {
 
   // Métodos
   void EstablecerHeuristica(); // Establece la heurística de los nodos del laberinto
+  void EstablecerCostoCamino(Nodo&); // Establece el costo del camino de los nodos del laberinto
   void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
+
+  // Getters
+  list<Nodo> GetVecinos(Nodo) const; // Retorna los nodos vecinos de un nodo
 
   // Comprobar cosas
   bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
   bool EsPared(const Posicion&) const; // Comprueba si una posición es una pared
+  bool EsDiagonal(const Posicion&) const; // Comprueba si una posición es diagonal
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream&, const Laberinto&);
@@ -30,4 +33,6 @@ class Laberinto {
   vector<vector<Nodo>> laberinto_;
   Posicion entrada_; // Entrada del laberinto
   Posicion salida_; // Salida del laberinto
+  int diagonal_ = 7;
+  int frontal_ = 5;
 };
