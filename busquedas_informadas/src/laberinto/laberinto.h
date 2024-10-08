@@ -14,7 +14,7 @@ class Laberinto {
 
   // Métodos
   void EstablecerHeuristica(); // Establece la heurística de los nodos del laberinto
-  void EstablecerCostoCamino(Nodo&); // Establece el costo del camino de los nodos del laberinto
+  void EstablecerCostoCamino(Nodo&, Nodo&); // Establece el costo del camino de los nodos del laberinto
   void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
 
@@ -24,7 +24,7 @@ class Laberinto {
   // Comprobar cosas
   bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
   bool EsPared(const Posicion&) const; // Comprueba si una posición es una pared
-  bool EsDiagonal(const Posicion&) const; // Comprueba si una posición es diagonal
+  bool EsDiagonal(const Posicion&, const Posicion&) const; // Comprueba si una posición es diagonal
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream&, const Laberinto&);

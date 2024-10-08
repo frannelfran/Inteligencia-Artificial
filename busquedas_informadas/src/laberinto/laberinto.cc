@@ -98,10 +98,9 @@ void Laberinto::BusquedaAEstrella() {
         continue;
       }
       // Calculamos el costo del camino desde el nodo inicial hasta el nodo actual
-      EstablecerCostoCamino(vecino); // Para la g(n)
+      EstablecerCostoCamino(actual, vecino); // Para la g(n)
       // Calculamos el costo total del nodo
       vecino.SetFN(vecino.GetGN() + vecino.GetHN());
-      cout << vecino.GetPosicion() << " " << vecino.GetFN() << endl;
     }
     
 
@@ -125,10 +124,15 @@ void Laberinto::BusquedaAEstrella() {
  * @param nodo Nodo a establecer el costo del camino
 */
 
-void Laberinto::EstablecerCostoCamino(Nodo& nodo) {
-  Posicion pos = nodo.GetPosicion();
+void Laberinto::EstablecerCostoCamino(Nodo& nodo_actual, Nodo& nodo_vecino) {
+  Posicion pos_actual = nodo_actual.GetPosicion();
+  Posicion pos_vecino = nodo_vecino.GetPosicion();
   // Comprobamos si las posiciones son diagonales
-  
+  if (EsDiagonal(pos_actual, pos_vecino)) {
+    nodo_vecino.SetGN(nodo_actual.GetGN() + diagonal_);
+  } else {
+    nodo_vecino.SetGN(nodo_actual.GetGN() + frontal_);
+  }
 }
 
 /**
@@ -161,6 +165,17 @@ list<Nodo> Laberinto::GetVecinos(Nodo nodo) const {
     }
   }
   return vecinos;
+}
+
+/**
+ * @brief Comprueba si una posición es diagonal
+ * @param pos_actual Posición a comprobar
+ * @param pos_vecino Posición a comprobar
+ * @return true si la posición es diagonal, false en caso contrario
+*/
+
+bool Laberinto::EsDiagonal(const Posicion& pos_actual, const Posicion& pos_vecino) const {
+  return (abs(pos_actual.GetX() - pos_vecino.GetX()) == abs(pos_actual.GetY() - pos_vecino.GetY()));
 }
 
 /**
