@@ -1,7 +1,11 @@
 #pragma once
 #include "../posicion/posicion.h"
+#include "../laberinto/laberinto.h"
 #include <iostream>
+#include <list>
 #include <vector>
+
+class Laberinto;
 
 using namespace std;
 
@@ -21,6 +25,7 @@ class Nodo {
   int GetEstado() const { return estado_; } // Retorna el estado del nodo
   int GetFX() const { return f_x_; } // Retorna el costo total del nodo
   Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
+  list<Nodo> GetVecinos(const Laberinto&) const; // Retorna los nodos vecinos del nodo
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Nodo& nodo) {
