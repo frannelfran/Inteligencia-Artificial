@@ -18,6 +18,9 @@ class Posicion {
     os << "(" << posicion.x_ << ", " << posicion.y_ << ")";
     return os;
   }
+  bool operator==(const Posicion& posicion) {
+    return (x_ == posicion.x_ && y_ == posicion.y_);
+  }
 
  private:
   int x_;
