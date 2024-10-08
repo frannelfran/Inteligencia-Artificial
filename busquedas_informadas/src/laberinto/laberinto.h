@@ -6,6 +6,8 @@
 #include <cmath>
 #include <list>
 
+class Nodo;
+
 class Laberinto {
  public:
   // Constructores
@@ -17,7 +19,9 @@ class Laberinto {
   void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
 
-
+  // Comprobar cosas
+  bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
+  bool EsPared(const Posicion&) const; // Comprueba si una posición es una pared
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream&, const Laberinto&);

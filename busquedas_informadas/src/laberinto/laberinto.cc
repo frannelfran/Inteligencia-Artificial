@@ -43,7 +43,7 @@ void Laberinto::EstablecerHeuristica() {
 
 void Laberinto::CambiarEntradaSalida(const Posicion& entrada, const Posicion& salida) {
   // Compruebo que las posiciones sean válidas
-  if (entrada.GetX() < 0 || entrada.GetX() > laberinto_.size() || entrada.GetY() < 0 || entrada.GetY() > laberinto_[0].size()) {
+  if (!EsPosicionValida(entrada) || !EsPosicionValida(salida)) {
     cout << "Posición de entrada inválida: Fuera de rango" << endl;
     return;
   }
@@ -91,6 +91,8 @@ void Laberinto::BusquedaAEstrella() {
       break;
     }
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
+    list<Nodo> vecinos = actual.GetVecinos(*this);
+    
     
 
 
@@ -110,6 +112,26 @@ void Laberinto::BusquedaAEstrella() {
 
 
 
+}
+
+/**
+ * @brief Comprueba si una posición es válida
+ * @param pos Posición a comprobar
+ * @return true si la posición es válida, false en caso contrario
+*/
+
+bool Laberinto::EsPosicionValida(const Posicion& pos) const {
+  return (pos.GetX() >= 0 && pos.GetX() < laberinto_.size() && pos.GetY() >= 0 && pos.GetY() < laberinto_[0].size());
+}
+
+/**
+ * @brief Comprueba si una posición es una pared
+ * @param pos Posición a comprobar
+ * @return true si la posición es una pared, false en caso contrario
+*/
+
+bool Laberinto::EsPared(const Posicion& pos) const {
+  return (laberinto_[pos.GetX()][pos.GetY()].GetEstado() == 1);
 }
 
 ostream& operator<<(ostream& os, const Laberinto& laberinto) {
