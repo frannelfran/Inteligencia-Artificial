@@ -19,18 +19,21 @@ class Nodo {
 
   // Getters
   int GetEstado() const { return estado_; } // Retorna el estado del nodo
+  int GetFX() const { return f_x_; } // Retorna el costo total del nodo
   Posicion& GetPosicion() { return posicion_; } // Retorna la posición del nodo
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Nodo& nodo) {
-    os << nodo.estado_ << " " << nodo.h_x_;   
+    os << nodo.estado_ << " ";
     return os;
+  }
+  bool operator==(const Nodo& nodo) {
+    return (posicion_ == nodo.posicion_);
   }
 
  private:
   int estado_; // Estado del nodo
   Posicion posicion_;
-  vector<Nodo> hijos_; // Hijos del nodo
   int costo_camino_; // Costo del camino desde el nodo raíz hasta el nodo actual
   int h_x_; // Heurística del nodo
   int g_x_; // Costo del camino desde el nodo actual hasta el nodo objetivo
