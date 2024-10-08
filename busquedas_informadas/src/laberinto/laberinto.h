@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <list>
 
 class Laberinto {
  public:
@@ -14,6 +15,7 @@ class Laberinto {
   // Métodos
   void EstablecerHeuristica(); // Establece la heurística de los nodos del laberinto
   void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
+  void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
 
 
 

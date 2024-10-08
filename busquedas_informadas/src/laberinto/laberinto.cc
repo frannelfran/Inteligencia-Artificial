@@ -60,6 +60,58 @@ void Laberinto::CambiarEntradaSalida(const Posicion& entrada, const Posicion& sa
   EstablecerHeuristica();
 }
 
+/**
+ * @brief Realiza la búsqueda A* en el laberinto
+*/
+
+void Laberinto::BusquedaAEstrella() {
+
+  Nodo inicial = laberinto_[entrada_.GetX()][entrada_.GetY()]; // Nodo inicial
+  Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
+  list<Nodo> abierta; // Lista de nodos visitados
+  list<Nodo> cerrada; // Lista de nodos no visitados
+  Nodo actual;
+  abierta.push_back(inicial);
+  while (!abierta.empty()) {
+    // Obtenemos el nodo actual a partir del nodo con costo de f(x) más bajo
+    actual = abierta.front();
+    for (auto nodo : abierta) {
+      if (nodo.GetFX() < actual.GetFX()) {
+        actual = nodo;
+      }
+    }
+    // Eliminamos el nodo actual de la lista abierta y lo agregamos a la cerrada
+    abierta.remove(actual), cerrada.push_back(actual);
+    // Comprobamos si el nodo actual es el objetivo
+    if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
+      for (auto nodo : cerrada) {
+        cout << nodo.GetPosicion() << " ";
+      }
+      cout << endl;
+      break;
+    }
+    // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
+    
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+}
+
 ostream& operator<<(ostream& os, const Laberinto& laberinto) {
   for (int i = 0; i < laberinto.laberinto_.size(); i++) {
     for (int j = 0; j < laberinto.laberinto_[i].size(); j++) {
