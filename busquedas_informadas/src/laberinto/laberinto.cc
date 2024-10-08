@@ -84,10 +84,7 @@ void Laberinto::BusquedaAEstrella() {
     abierta.remove(actual), cerrada.push_back(actual);
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
-      for (auto nodo : cerrada) {
-        cout << nodo.GetPosicion() << " ";
-      }
-      cout << endl;
+      // Terminar
       break;
     }
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
@@ -101,22 +98,21 @@ void Laberinto::BusquedaAEstrella() {
       EstablecerCostoCamino(actual, vecino); // Para la g(n)
       // Calculamos el costo total del nodo
       vecino.SetFN(vecino.GetGN() + vecino.GetHN());
+      // Si encontramos la posicion en la lista abierta
+      if (find(abierta.begin(), abierta.end(), vecino) != abierta.end()) {
+        // Si el costo del camino del nodo actual es mayor al del vecino
+        if (vecino.GetGN() > actual.GetGN()) {
+          // Establecemos el nodo actual como el padre del vecino
+          vecino.SetPadre(actual.GetPosicion());
+          // Establecemos el costo del camino del nodo actual como el del vecino
+          vecino.SetGN(actual.GetGN());
+        }
+      }
+      else {
+        abierta.push_back(vecino);
+      }
     }
-    
-
-
-
-
-
   }
-
-
-
-
-
-
-
-
 }
 
 /**
