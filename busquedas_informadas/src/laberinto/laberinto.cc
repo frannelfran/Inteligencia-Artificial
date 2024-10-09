@@ -83,7 +83,7 @@ void Laberinto::CambiarSalida(const Posicion& salida) {
 */
 
 void Laberinto::BusquedaAEstrella() {
-
+  int iteracion = 1;
   Nodo inicial = laberinto_[entrada_.GetX()][entrada_.GetY()]; // Nodo inicial
   Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
   list<Nodo> abierta; // Lista de nodos visitados
@@ -136,12 +136,18 @@ void Laberinto::BusquedaAEstrella() {
       }
     }
     SetValores(abierta);
+    cout << "Iteración: " << iteracion++ << endl;
     cout << "Nodo actual: " << actual.GetPosicion() << endl;
     cout << "Lista abierta: ";
     for (auto& nodo : abierta) {
       cout << nodo.GetPosicion() << " ";
     }
     cout << endl;
+    cout << "Lista cerrada: ";
+    for (auto& nodo : cerrada) {
+      cout << nodo.GetPosicion() << " ";
+    }
+    cout << endl << "-----------------------------------" << endl;
   }
 }
 
