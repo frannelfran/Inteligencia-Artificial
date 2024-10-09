@@ -84,7 +84,7 @@ void Laberinto::BusquedaAEstrella() {
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
       // Muestro el camino a partir de los padres de cada nodo
-      MostrarCamino(cerrada);
+      MostrarCamino();
       return;
     }
 
@@ -95,13 +95,12 @@ void Laberinto::BusquedaAEstrella() {
       if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == '1') {
         continue;
       }
-
       // Calculamos el costo del camino desde el nodo inicial hasta el nodo actual
       EstablecerCostoCamino(actual, vecino); // Para la g(n)
       
       // Calculamos el costo total del nodo
       vecino.SetFN(vecino.GetGN() + vecino.GetHN());
-      
+
       // Si encontramos la posicion en la lista abierta
       auto vecino_abierto = find(abierta.begin(), abierta.end(), vecino);
       if (vecino_abierto != abierta.end()) {
@@ -118,18 +117,15 @@ void Laberinto::BusquedaAEstrella() {
         abierta.push_back(vecino);
       }
     }
+    SetValores(abierta);
   }
 }
 
 /**
  * @brief Muestra el camino encontrado
- * @param nodo Nodo objetivo
 */
 
-void Laberinto::MostrarCamino(const list<Nodo>& camino) {
-  for (auto& nodo : camino) {
-    laberinto_[nodo.GetPosicion().GetX()][nodo.GetPosicion().GetY()].SetPadre(nodo.GetPadre());
-  }
+void Laberinto::MostrarCamino() {
   Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
   while (actual.GetPosicion() != entrada_) {
     Posicion padre = actual.GetPadre();
@@ -153,6 +149,32 @@ void Laberinto::MostrarCamino(const list<Nodo>& camino) {
     }
     cout << endl;
   }
+  cout << "Coste total: " << CostoTotalCamino() << endl;
+}
+
+/**
+ * @brief Establece el costo total, el costo del camino y el padre de los nodos
+ * @param nodos Lista de nodos
+*/
+
+void Laberinto::SetValores(const list<Nodo>& nodos) {
+  for (auto& nodo : nodos) {
+    Posicion pos = nodo.GetPosicion();
+    laberinto_[pos.GetX()][pos.GetY()].SetPadre(nodo.GetPadre());
+    laberinto_[pos.GetX()][pos.GetY()].SetGN(nodo.GetGN());
+    laberinto_[pos.GetX()][pos.GetY()].SetFN(nodo.GetFN());
+  }
+}
+
+/**
+ * @brief Retorna el costo total del camino
+ * @param inicial Nodo inicial
+ * @param objetivo Nodo objetivo
+ * @return Costo total del camino
+*/
+
+int Laberinto::CostoTotalCamino() const {
+  return laberinto_[salida_.GetX()][salida_.GetY()].GetGN();
 }
 
 /**

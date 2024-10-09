@@ -5,7 +5,6 @@
 #include <fstream>
 #include <cmath>
 #include <list>
-#include <unordered_set>
 
 class Laberinto {
  public:
@@ -18,15 +17,17 @@ class Laberinto {
   void EstablecerCostoCamino(Nodo&, Nodo&); // Establece el costo del camino de los nodos del laberinto
   void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
-  void MostrarCamino(const list<Nodo>&); // Muestra el camino encontrado
+  void MostrarCamino(); // Muestra el camino encontrado
 
   // Getters
   list<Nodo> GetVecinos(const Nodo&) const; // Retorna los nodos vecinos de un nodo
+  int CostoTotalCamino() const; // Retorna el costo total del camino
 
   // Comprobar cosas
   bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
   bool EsPared(const Posicion&) const; // Comprueba si una posición es una pared
   bool EsDiagonal(const Posicion&, const Posicion&) const; // Comprueba si una posición es diagonal
+  void SetValores(const list<Nodo>&); // Establece el costo total y el costo del camino de los nodos
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream&, const Laberinto&);
