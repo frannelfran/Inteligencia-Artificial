@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
   ifstream file(argv[1]);
   Laberinto lab(file);
-  cout << lab << endl;
+  lab.CambiarEntradaSalida(Posicion(0, 0), Posicion(4, 4));
   lab.BusquedaAEstrella();
   cout << lab << endl;
 
