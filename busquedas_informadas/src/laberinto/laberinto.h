@@ -5,6 +5,7 @@
 #include <fstream>
 #include <cmath>
 #include <list>
+#include <unordered_set>
 
 class Laberinto {
  public:

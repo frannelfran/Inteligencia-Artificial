@@ -76,44 +76,61 @@ void Laberinto::BusquedaAEstrella() {
   abierta.push_back(inicial);
   while (!abierta.empty()) {
     // Obtenemos el nodo actual a partir del nodo con costo de f(x) más bajo
-    actual = abierta.front();
-    for (auto nodo : abierta) {
-      if (nodo.GetFN() < actual.GetFN()) {
-        actual = nodo;
-      }
-    }
+    actual = *min_element(abierta.begin(), abierta.end(), [](const Nodo& a, const Nodo& b) { return a.GetFN() < b.GetFN();});
+    
     // Eliminamos el nodo actual de la lista abierta y lo agregamos a la cerrada
     abierta.remove(actual), cerrada.push_back(actual);
+
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
       // Muestro el camino
-      MostrarCamino(actual);
+      MostrarCamino(objetivo);
     }
+
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
     vecinos = GetVecinos(actual);
     // Recorremos la lista de nodos adyacentes
-    for (auto vecino : vecinos) {
-      if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() && vecino.GetEstado() != 1) {
+    for (auto& vecino : vecinos) {
+      if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == 1) {
         continue;
       }
+
       // Calculamos el costo del camino desde el nodo inicial hasta el nodo actual
       EstablecerCostoCamino(actual, vecino); // Para la g(n)
+      
       // Calculamos el costo total del nodo
       vecino.SetFN(vecino.GetGN() + vecino.GetHN());
+      
       // Si encontramos la posicion en la lista abierta
-      if (find(abierta.begin(), abierta.end(), vecino) != abierta.end()) {
+      auto it = find(abierta.begin(), abierta.end(), vecino);
+      if (it != abierta.end()) {
         // Si el costo del camino del nodo actual es mayor al del vecino
-        if (vecino.GetGN() > actual.GetGN()) {
+        if (vecino.GetGN() < it->GetGN()) {
           // Establecemos el nodo actual como el padre del vecino
-          vecino.SetPadre(actual.GetPosicion());
+          it->SetPadre(actual.GetPosicion());
           // Establecemos el costo del camino del nodo actual como el del vecino
-          vecino.SetGN(actual.GetGN());
+          it->SetGN(vecino.GetGN());
         }
       }
       else {
+        vecino.SetPadre(actual.GetPosicion());
         abierta.push_back(vecino);
       }
     }
+  }
+}
+
+/**
+ * @brief Muestra el camino encontrado
+ * @param nodo Nodo objetivo
+*/
+
+void Laberinto::MostrarCamino(const Nodo& nodo) {
+  Posicion padre = nodo.GetPadre();
+  while (laberinto_[padre.GetX()][padre.GetY()].GetEstado() != 3) {
+    cout << "oiselfks" << endl;
+    //laberinto_[padre.GetX()][padre.GetY()].SetEstado(2);
+    //padre = laberinto_[padre.GetX()][padre.GetY()].GetPadre();
   }
 }
 
