@@ -1,9 +1,6 @@
 #pragma once
 #include "../posicion/posicion.h"
-#include "../laberinto/laberinto.h"
 #include <iostream>
-#include <list>
-#include <vector>
 
 using namespace std;
 
