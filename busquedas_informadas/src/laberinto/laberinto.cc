@@ -128,7 +128,7 @@ void Laberinto::BusquedaAEstrella() {
 
 void Laberinto::MostrarCamino(const list<Nodo>& camino) {
   for (auto& nodo : camino) {
-    laberinto_[nodo.GetPosicion().GetX()][nodo.GetPosicion().GetY()] = nodo;
+    laberinto_[nodo.GetPosicion().GetX()][nodo.GetPosicion().GetY()].SetPadre(nodo.GetPadre());
   }
   Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
   while (actual.GetPosicion() != entrada_) {
