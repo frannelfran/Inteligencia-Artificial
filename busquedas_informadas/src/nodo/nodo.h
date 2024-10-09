@@ -26,7 +26,7 @@ class Nodo {
   int GetGN() const { return g_n_; } // Retorna el costo del camino desde el nodo actual hasta el nodo objetivo
   int GetHN() const { return h_n_; } // Retorna la heurística del nodo
   Posicion GetPosicion() const { return posicion_; } // Retorna la posición del nodo
-  Posicion GetPadre() const { return padre_; } // Retorna el nodo padre
+  const Posicion& GetPadre() const { return padre_; } // Retorna el nodo padre
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Nodo& nodo) {
