@@ -15,7 +15,8 @@ class Laberinto {
   // Métodos
   void EstablecerHeuristica(); // Establece la heurística de los nodos del laberinto
   void EstablecerCostoCamino(Nodo&, Nodo&); // Establece el costo del camino de los nodos del laberinto
-  void CambiarEntradaSalida(const Posicion&, const Posicion&); // Cambia la entrada y salida del laberinto
+  void CambiarEntrada(const Posicion&); // Cambia la entrada del laberinto
+  void CambiarSalida(const Posicion&); // Cambia la salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
   void MostrarCamino(); // Muestra el camino encontrado
 

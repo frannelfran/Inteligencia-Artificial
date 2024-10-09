@@ -38,23 +38,41 @@ void Laberinto::EstablecerHeuristica() {
 /**
  * @brief Cambia la entrada y salida del laberinto
  * @param entrada Nueva posición de la entrada
- * @param salida Nueva posición de la salida
 */
 
-void Laberinto::CambiarEntradaSalida(const Posicion& entrada, const Posicion& salida) {
+void Laberinto::CambiarEntrada(const Posicion& entrada) {
   // Compruebo que las posiciones sean válidas
-  if (!EsPosicionValida(entrada) || !EsPosicionValida(salida)) {
+  if (!EsPosicionValida(entrada)) {
     cout << "Posición de entrada inválida: Fuera de rango" << endl;
     return;
   }
-  // Establezco como 1 la entrada y salida anteriores
+  // Establezco como 1 la entrada anterior
   laberinto_[entrada_.GetX()][entrada_.GetY()].SetEstado('1');
   laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('1');
-  // Establezco la nueva entrada y salida
+  // Establezco la nueva entrada
   laberinto_[entrada.GetX()][entrada.GetY()].SetEstado('3');
-  laberinto_[salida.GetX()][salida.GetY()].SetEstado('4');
-  // Actualizo la entrada y salida
+  // Actualizo la entrada
   this->entrada_ = entrada;
+  // Establezco la heurística de los nodos
+  EstablecerHeuristica();
+}
+
+/**
+ * @brief Cambia la salida del laberinto
+ * @param salida Nueva posición de la salida
+*/
+
+void Laberinto::CambiarSalida(const Posicion& salida) {
+  // Compruebo que las posiciones sean válidas
+  if (!EsPosicionValida(salida)) {
+    cout << "Posición de salida inválida: Fuera de rango" << endl;
+    return;
+  }
+  // Establezco como 1 la salida anterior
+  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('1');
+  // Establezco la nueva salida
+  laberinto_[salida.GetX()][salida.GetY()].SetEstado('4');
+  // Actualizo la salida
   this->salida_ = salida;
   // Establezco la heurística de los nodos
   EstablecerHeuristica();
