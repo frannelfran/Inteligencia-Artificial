@@ -28,7 +28,7 @@ Laberinto::Laberinto(ifstream& file) {
 void Laberinto::EstablecerHeuristica() {
   for (int i = 0; i < laberinto_.size(); i++) {
     for (int j = 0; j < laberinto_[i].size(); j++) {
-      if (laberinto_[i][j].GetEstado() == 0 || laberinto_[i][j].GetEstado() == 3 || laberinto_[i][j].GetEstado() == 4) {
+      if (laberinto_[i][j].GetEstado() == '0' || laberinto_[i][j].GetEstado() == '3' || laberinto_[i][j].GetEstado() == '4') {
         laberinto_[i][j].SetHN((abs(salida_.GetX() - i) + abs(salida_.GetY() - j)) * 3);
       }
     }
@@ -48,11 +48,11 @@ void Laberinto::CambiarEntradaSalida(const Posicion& entrada, const Posicion& sa
     return;
   }
   // Establezco como 1 la entrada y salida anteriores
-  laberinto_[entrada_.GetX()][entrada_.GetY()].SetEstado(1);
-  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado(1);
+  laberinto_[entrada_.GetX()][entrada_.GetY()].SetEstado('1');
+  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('1');
   // Establezco la nueva entrada y salida
-  laberinto_[entrada.GetX()][entrada.GetY()].SetEstado(3);
-  laberinto_[salida.GetX()][salida.GetY()].SetEstado(4);
+  laberinto_[entrada.GetX()][entrada.GetY()].SetEstado('3');
+  laberinto_[salida.GetX()][salida.GetY()].SetEstado('4');
   // Actualizo la entrada y salida
   this->entrada_ = entrada;
   this->salida_ = salida;
@@ -92,7 +92,7 @@ void Laberinto::BusquedaAEstrella() {
     vecinos = GetVecinos(actual);
     // Recorremos la lista de nodos adyacentes
     for (auto& vecino : vecinos) {
-      if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == 1) {
+      if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == '1') {
         continue;
       }
 
@@ -133,10 +133,26 @@ void Laberinto::MostrarCamino(const list<Nodo>& camino) {
   Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
   while (actual.GetPosicion() != entrada_) {
     Posicion padre = actual.GetPadre();
-    laberinto_[padre.GetX()][padre.GetY()].SetEstado(2);
+    laberinto_[padre.GetX()][padre.GetY()].SetEstado('x');
     actual = laberinto_[padre.GetX()][padre.GetY()];
   }
-  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado(2);
+  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('x');
+  // Imprimir el laberinto con el camino
+  for (int i = 0; i < laberinto_.size(); i++) {
+    for (int j = 0; j < laberinto_[i].size(); j++) {
+      char estado = laberinto_[i][j].GetEstado();
+      
+      // Imprimir la 'X' en verde y el '1' en rojo
+      if (estado == 'x') {
+        cout << "\033[32mX\033[0m "; // 'X' en verde
+      } else if (estado == '1') {
+        cout << "\033[31m1\033[0m "; // '1' en rojo
+      } else {
+        cout << estado << " "; // Imprimir el estado original
+      }
+    }
+    cout << endl;
+  }
 }
 
 /**
@@ -215,7 +231,7 @@ bool Laberinto::EsPosicionValida(const Posicion& pos) const {
 */
 
 bool Laberinto::EsPared(const Posicion& pos) const {
-  return (laberinto_[pos.GetX()][pos.GetY()].GetEstado() == 1);
+  return (laberinto_[pos.GetX()][pos.GetY()].GetEstado() == '1');
 }
 
 ostream& operator<<(ostream& os, const Laberinto& laberinto) {
