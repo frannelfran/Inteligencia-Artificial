@@ -70,6 +70,8 @@ void Laberinto::BusquedaAEstrella() {
   Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
   list<Nodo> abierta; // Lista de nodos visitados
   list<Nodo> cerrada; // Lista de nodos no visitados
+  list<Nodo> vecinos; // Vecinos de cada nodo
+
   Nodo actual;
   abierta.push_back(inicial);
   while (!abierta.empty()) {
@@ -84,11 +86,11 @@ void Laberinto::BusquedaAEstrella() {
     abierta.remove(actual), cerrada.push_back(actual);
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
-      // Terminar
-      break;
+      // Muestro el camino
+      MostrarCamino(actual);
     }
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
-    list<Nodo> vecinos = GetVecinos(actual);
+    vecinos = GetVecinos(actual);
     // Recorremos la lista de nodos adyacentes
     for (auto vecino : vecinos) {
       if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() && vecino.GetEstado() != 1) {

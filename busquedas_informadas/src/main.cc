@@ -7,6 +7,7 @@ int main(int argc, char* argv[]) {
   Laberinto lab(file);
   cout << lab << endl;
   lab.BusquedaAEstrella();
+  cout << lab << endl;
 
   return 0;
 }

@@ -7,7 +7,7 @@ class Posicion {
  public:
   // Constructores 
   Posicion() = default;
-  Posicion(int x, int y) : x_(x), y_(y) {}
+  Posicion(const int& x, const int& y) : x_(x), y_(y) {}
 
   // Getters
   int GetX() const { return x_; }
