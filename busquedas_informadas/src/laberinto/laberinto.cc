@@ -118,6 +118,12 @@ void Laberinto::BusquedaAEstrella() {
       }
     }
     SetValores(abierta);
+    cout << "Nodo actual: " << actual.GetPosicion() << endl;
+    cout << "Lista abierta: ";
+    for (auto& nodo : abierta) {
+      cout << nodo.GetPosicion() << " ";
+    }
+    cout << endl;
   }
 }
 
@@ -160,9 +166,9 @@ void Laberinto::MostrarCamino() {
 void Laberinto::SetValores(const list<Nodo>& nodos) {
   for (auto& nodo : nodos) {
     Posicion pos = nodo.GetPosicion();
-    laberinto_[pos.GetX()][pos.GetY()].SetPadre(nodo.GetPadre());
-    laberinto_[pos.GetX()][pos.GetY()].SetGN(nodo.GetGN());
-    laberinto_[pos.GetX()][pos.GetY()].SetFN(nodo.GetFN());
+    laberinto_[pos.GetX()][pos.GetY()].SetPadre(nodo.GetPadre()); // Establecer el padre
+    laberinto_[pos.GetX()][pos.GetY()].SetGN(nodo.GetGN()); // Establecer el costo del camino
+    laberinto_[pos.GetX()][pos.GetY()].SetFN(nodo.GetFN()); // Establecer el costo total
   }
 }
 
