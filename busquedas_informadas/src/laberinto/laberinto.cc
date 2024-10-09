@@ -83,8 +83,9 @@ void Laberinto::BusquedaAEstrella() {
 
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
-      // Muestro el camino
-      MostrarCamino(objetivo);
+      // Muestro el camino a partir de los padres de cada nodo
+      MostrarCamino(cerrada);
+      return;
     }
 
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
@@ -102,14 +103,14 @@ void Laberinto::BusquedaAEstrella() {
       vecino.SetFN(vecino.GetGN() + vecino.GetHN());
       
       // Si encontramos la posicion en la lista abierta
-      auto it = find(abierta.begin(), abierta.end(), vecino);
-      if (it != abierta.end()) {
+      auto vecino_abierto = find(abierta.begin(), abierta.end(), vecino);
+      if (vecino_abierto != abierta.end()) {
         // Si el costo del camino del nodo actual es mayor al del vecino
-        if (vecino.GetGN() < it->GetGN()) {
+        if (vecino.GetGN() < vecino_abierto->GetGN()) {
           // Establecemos el nodo actual como el padre del vecino
-          it->SetPadre(actual.GetPosicion());
+          vecino_abierto->SetPadre(actual.GetPosicion());
           // Establecemos el costo del camino del nodo actual como el del vecino
-          it->SetGN(vecino.GetGN());
+          vecino_abierto->SetGN(vecino.GetGN());
         }
       }
       else {
@@ -125,13 +126,17 @@ void Laberinto::BusquedaAEstrella() {
  * @param nodo Nodo objetivo
 */
 
-void Laberinto::MostrarCamino(const Nodo& nodo) {
-  Posicion padre = nodo.GetPadre();
-  while (laberinto_[padre.GetX()][padre.GetY()].GetEstado() != 3) {
-    cout << "oiselfks" << endl;
-    //laberinto_[padre.GetX()][padre.GetY()].SetEstado(2);
-    //padre = laberinto_[padre.GetX()][padre.GetY()].GetPadre();
+void Laberinto::MostrarCamino(const list<Nodo>& camino) {
+  for (auto& nodo : camino) {
+    laberinto_[nodo.GetPosicion().GetX()][nodo.GetPosicion().GetY()] = nodo;
   }
+  Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
+  while (actual.GetPosicion() != entrada_) {
+    Posicion padre = actual.GetPadre();
+    laberinto_[padre.GetX()][padre.GetY()].SetEstado(2);
+    actual = laberinto_[padre.GetX()][padre.GetY()];
+  }
+  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado(2);
 }
 
 /**
@@ -156,7 +161,7 @@ void Laberinto::EstablecerCostoCamino(Nodo& nodo_actual, Nodo& nodo_vecino) {
  * @return Lista de nodos vecinos
 */
 
-list<Nodo> Laberinto::GetVecinos(Nodo nodo) const {
+list<Nodo> Laberinto::GetVecinos(const Nodo& nodo) const {
   list<Nodo> vecinos; // Lista de nodos vecinos
   Posicion pos = nodo.GetPosicion(); // Posición del nodo actual
   int x = pos.GetX(); // Coordenada x del nodo actual
