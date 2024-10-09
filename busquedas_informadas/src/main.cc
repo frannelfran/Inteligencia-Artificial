@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
         cout << "Opción no válida" << endl;
         break;
     }
-  } while (opcion != 5);
+  } while (opcion != 4);
   
   file.close();
   return 0;
