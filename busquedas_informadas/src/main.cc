@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
         cin >> x >> y;
         laberinto.CambiarEntrada(Posicion(x, y));
         laberinto.ResetearValores();
-        file_out.clear();
         break;
       }
       case 2: { // Cambiar la salida
@@ -40,7 +39,6 @@ int main(int argc, char* argv[]) {
         cin >> x >> y;
         laberinto.CambiarSalida(Posicion(x, y));
         laberinto.ResetearValores();
-        file_out.clear();
         break;
       }
       case 3: // Buscar camino
