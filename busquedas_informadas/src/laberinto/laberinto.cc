@@ -93,9 +93,10 @@ void Laberinto::ResetearValores() {
 
 /**
  * @brief Realiza la búsqueda A* en el laberinto
+ * @param file_out Archivo de salida
 */
 
-void Laberinto::BusquedaAEstrella() {
+void Laberinto::BusquedaAEstrella(ofstream& file_out) {
   int iteracion = 1;
   Nodo inicial = laberinto_[entrada_.GetX()][entrada_.GetY()]; // Nodo inicial
   Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
@@ -115,7 +116,7 @@ void Laberinto::BusquedaAEstrella() {
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
       // Muestro el camino a partir de los padres de cada nodo
-      MostrarCamino();
+      MostrarCamino(file_out);
       return;
     }
 
@@ -149,26 +150,27 @@ void Laberinto::BusquedaAEstrella() {
       }
     }
     SetValores(abierta); // Establezco los valores calculados a los nodos del laberinto
-    cout << "Iteración: " << iteracion++ << endl;
-    cout << "Nodo actual: " << actual.GetPosicion() << endl;
-    cout << "Lista abierta: ";
+    file_out << "Iteración: " << iteracion++ << endl;
+    file_out << "Nodo actual: " << actual.GetPosicion() << endl;
+    file_out << "Lista abierta: ";
     for (auto& nodo : abierta) {
-      cout << nodo.GetPosicion() << " ";
+      file_out << nodo.GetPosicion() << " ";
     }
-    cout << endl;
-    cout << "Lista cerrada: ";
+    file_out << endl;
+    file_out << "Lista cerrada: ";
     for (auto& nodo : cerrada) {
-      cout << nodo.GetPosicion() << " ";
+      file_out << nodo.GetPosicion() << " ";
     }
-    cout << endl << "-----------------------------------" << endl;
+    file_out << endl << "-----------------------------------" << endl;
   }
 }
 
 /**
  * @brief Muestra el camino encontrado
+ * @param file_out Archivo de salida
 */
 
-void Laberinto::MostrarCamino() {
+void Laberinto::MostrarCamino(ofstream& file_out) {
   Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
   while (actual.GetPosicion() != entrada_) {
     Posicion padre = actual.GetPadre();
@@ -190,7 +192,7 @@ void Laberinto::MostrarCamino() {
     }
     cout << endl;
   }
-  cout << "Coste total: " << CostoTotalCamino() << endl;
+  file_out << "Coste total: " << CostoTotalCamino() << endl;
 }
 
 /**

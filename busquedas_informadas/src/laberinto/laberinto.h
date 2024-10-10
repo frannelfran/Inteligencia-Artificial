@@ -17,8 +17,8 @@ class Laberinto {
   void EstablecerCostoCamino(Nodo&, Nodo&); // Establece el costo del camino de los nodos del laberinto
   void CambiarEntrada(const Posicion&); // Cambia la entrada del laberinto
   void CambiarSalida(const Posicion&); // Cambia la salida del laberinto
-  void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
-  void MostrarCamino(); // Muestra el camino encontrado
+  void BusquedaAEstrella(ofstream&); // Realiza la búsqueda A* en el laberinto
+  void MostrarCamino(ofstream&); // Muestra el camino encontrado
   void ResetearValores(); // Resetea los valores de los nodos del laberinto
 
   // Getters
