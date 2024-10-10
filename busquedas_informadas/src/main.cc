@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
         cout << "Introduce la nueva posición de la entrada: ";
         cin >> x >> y;
         laberinto.CambiarEntrada(Posicion(x, y));
+        laberinto.ResetearValores();
         break;
       }
       case 2: { // Cambiar la salida
@@ -36,6 +37,7 @@ int main(int argc, char* argv[]) {
         cout << "Introduce la nueva posición de la salida: ";
         cin >> x >> y;
         laberinto.CambiarSalida(Posicion(x, y));
+        laberinto.ResetearValores();
         break;
       }
       case 3: // Buscar camino
