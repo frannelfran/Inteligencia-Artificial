@@ -48,7 +48,6 @@ void Laberinto::CambiarEntrada(const Posicion& entrada) {
   }
   // Establezco como 1 la entrada anterior
   laberinto_[entrada_.GetX()][entrada_.GetY()].SetEstado('1');
-  laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('1');
   // Establezco la nueva entrada
   laberinto_[entrada.GetX()][entrada.GetY()].SetEstado('3');
   // Actualizo la entrada
@@ -135,7 +134,7 @@ void Laberinto::BusquedaAEstrella() {
         abierta.push_back(vecino);
       }
     }
-    SetValores(abierta);
+    SetValores(abierta); // Establezco los valores calculados a los nodos del laberinto
     cout << "Iteración: " << iteracion++ << endl;
     cout << "Nodo actual: " << actual.GetPosicion() << endl;
     cout << "Lista abierta: ";
@@ -168,11 +167,9 @@ void Laberinto::MostrarCamino() {
     for (int j = 0; j < laberinto_[i].size(); j++) {
       char estado = laberinto_[i][j].GetEstado();
       
-      // Imprimir la 'X' en verde y el '1' en rojo
+      // Imprimir la 'X' en verde
       if (estado == 'x') {
-        cout << "\033[32mX\033[0m "; // 'X' en verde
-      } else if (estado == '1') {
-        cout << "\033[31m1\033[0m "; // '1' en rojo
+        cout << "\033[31mX\033[0m "; // 'X' en rojo
       } else {
         cout << estado << " "; // Imprimir el estado original
       }
