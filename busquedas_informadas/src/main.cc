@@ -3,11 +3,12 @@
 #include "posicion/posicion.h"
 
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
-    cout << "Uso: " << argv[0] << " <archivo_entrada>" << endl;
+  if (argc != 3) {
+    cout << "Uso: " << argv[0] << " <archivo_entrada> <archivo_salida>" << endl;
     return EXIT_FAILURE;
   }
   ifstream file(argv[1]);
+  ofstream file_out(argv[2]);
   // Compruebo que se pueda abrir el fichero
   if (!file.is_open()) {
     cout << "Error al abrir el archivo" << endl;
@@ -30,6 +31,7 @@ int main(int argc, char* argv[]) {
         cin >> x >> y;
         laberinto.CambiarEntrada(Posicion(x, y));
         laberinto.ResetearValores();
+        file_out.clear();
         break;
       }
       case 2: { // Cambiar la salida
@@ -38,10 +40,12 @@ int main(int argc, char* argv[]) {
         cin >> x >> y;
         laberinto.CambiarSalida(Posicion(x, y));
         laberinto.ResetearValores();
+        file_out.clear();
         break;
       }
       case 3: // Buscar camino
-        laberinto.BusquedaAEstrella();
+        laberinto.BusquedaAEstrella(file_out);
+        cout << "Comprobar el archivo de salida" << endl;
         break;
       case 4: // Salir
         cout << "Saliendo..." << endl;
@@ -53,5 +57,6 @@ int main(int argc, char* argv[]) {
   } while (opcion != 4);
   
   file.close();
+  file_out.close();
   return 0;
 }
