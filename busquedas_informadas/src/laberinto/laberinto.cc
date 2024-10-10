@@ -100,9 +100,10 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
   int iteracion = 1;
   Nodo inicial = laberinto_[entrada_.GetX()][entrada_.GetY()]; // Nodo inicial
   Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
-  list<Nodo> abierta; // Lista de nodos visitados
-  list<Nodo> cerrada; // Lista de nodos no visitados
+  list<Nodo> abierta; // Lista de nodos por inspeccionar
+  list<Nodo> cerrada; // Lista de nodos inspeccionados
   list<Nodo> vecinos; // Vecinos de cada nodo
+  list<Nodo> generados; // Nodos generados
 
   Nodo actual;
   abierta.push_back(inicial);
@@ -122,6 +123,9 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
 
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
     vecinos = GetVecinos(actual);
+    // Guardamos los nodos generados
+    generados.insert(generados.end(), vecinos.begin(), vecinos.end());
+
     // Recorremos la lista de nodos adyacentes
     for (auto& vecino : vecinos) {
       if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == '1') {
@@ -150,14 +154,17 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
       }
     }
     SetValores(abierta); // Establezco los valores calculados a los nodos del laberinto
+    // Muestro la información de la iteración
     file_out << "Iteración: " << iteracion++ << endl;
     file_out << "Nodo actual: " << actual.GetPosicion() << endl;
-    file_out << "Lista abierta: ";
-    for (auto& nodo : abierta) {
+    // Muestro los nodos generados
+    file_out << "Nodos generados: ";
+    for (auto& nodo : generados) {
       file_out << nodo.GetPosicion() << " ";
     }
     file_out << endl;
-    file_out << "Lista cerrada: ";
+    // Muestro los nodos inspeccionados
+    file_out << "Nodos inspeccionados: ";
     for (auto& nodo : cerrada) {
       file_out << nodo.GetPosicion() << " ";
     }
@@ -171,13 +178,16 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
 */
 
 void Laberinto::MostrarCamino(ofstream& file_out) {
+  vector<Nodo> camino; // Camino encontrado
   Nodo actual = laberinto_[salida_.GetX()][salida_.GetY()];
   while (actual.GetPosicion() != entrada_) {
     Posicion padre = actual.GetPadre();
     laberinto_[padre.GetX()][padre.GetY()].SetEstado('x');
+    camino.push_back(actual);
     actual = laberinto_[padre.GetX()][padre.GetY()];
   }
   laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('x');
+  camino.push_back(actual); // Añadir el nodo inicial al camino
   // Imprimir el laberinto con el camino
   for (int i = 0; i < laberinto_.size(); i++) {
     for (int j = 0; j < laberinto_[i].size(); j++) {
@@ -192,7 +202,13 @@ void Laberinto::MostrarCamino(ofstream& file_out) {
     }
     cout << endl;
   }
-  file_out << "Coste total: " << CostoTotalCamino() << endl;
+  // Mostrar el camino en el archivo de salida
+  file_out << "Camino: ";
+  for (int i = camino.size() - 1; i >= 0; i--) {
+    file_out << camino[i].GetPosicion() << " ";
+  }
+  // Mostrar el costo total del camino
+  file_out << endl << "Coste total: " << CostoTotalCamino() << endl;
 }
 
 /**
