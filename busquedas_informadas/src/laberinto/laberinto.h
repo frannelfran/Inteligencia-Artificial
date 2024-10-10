@@ -19,6 +19,7 @@ class Laberinto {
   void CambiarSalida(const Posicion&); // Cambia la salida del laberinto
   void BusquedaAEstrella(); // Realiza la búsqueda A* en el laberinto
   void MostrarCamino(); // Muestra el camino encontrado
+  void ResetearValores(); // Resetea los valores de los nodos del laberinto
 
   // Getters
   list<Nodo> GetVecinos(const Nodo&) const; // Retorna los nodos vecinos de un nodo

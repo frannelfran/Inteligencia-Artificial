@@ -78,6 +78,20 @@ void Laberinto::CambiarSalida(const Posicion& salida) {
 }
 
 /**
+ * @brief Resetea los valores de los nodos del laberinto
+*/
+
+void Laberinto::ResetearValores() {
+  for (int i = 0; i < laberinto_.size(); i++) {
+    for (int j = 0; j < laberinto_[i].size(); j++) {
+      laberinto_[i][j].SetFN(0);
+      laberinto_[i][j].SetGN(0);
+      if (laberinto_[i][j].GetEstado() == 'x') laberinto_[i][j].SetEstado('0');
+    }
+  }
+}
+
+/**
  * @brief Realiza la búsqueda A* en el laberinto
 */
 
