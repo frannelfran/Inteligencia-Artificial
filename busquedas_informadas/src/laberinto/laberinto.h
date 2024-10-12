@@ -26,12 +26,16 @@ class Laberinto {
   int CostoTotalCamino() const; // Retorna el costo total del camino
   Posicion GetEntrada() const { return entrada_; } // Retorna la entrada del laberinto
   Posicion GetSalida() const { return salida_; } // Retorna la salida del laberinto
+  int GetFilas() const { return filas_; } // Retorna el número de filas del laberinto
+  int GetColumnas() const { return columnas_; } // Retorna el número de columnas del laberinto
+
+  // Setters
+  void SetValores(const list<Nodo>&); // Establece el costo total y el costo del camino de los nodos
 
   // Comprobar cosas
   bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
   bool EsPared(const Posicion&) const; // Comprueba si una posición es una pared
   bool EsDiagonal(const Posicion&, const Posicion&) const; // Comprueba si una posición es diagonal
-  void SetValores(const list<Nodo>&); // Establece el costo total y el costo del camino de los nodos
 
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream&, const Laberinto&);
@@ -42,4 +46,6 @@ class Laberinto {
   Posicion salida_; // Salida del laberinto
   int diagonal_ = 7;
   int frontal_ = 5;
+  int filas_;
+  int columnas_;
 };

@@ -9,6 +9,10 @@ Laberinto::Laberinto(ifstream& file) {
   int filas, columnas, estado;
   file >> filas >> columnas;
 
+  // Establecer las filas y columnas del laberinto
+  this->filas_ = filas;
+  this->columnas_ = columnas;
+
   laberinto_.resize(filas, vector<Nodo>(columnas));
   for (int i = 0; i < filas; i++) {
     for (int j = 0; j < columnas; j++) {
@@ -123,9 +127,13 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
 
     // Obtenemos los nodos adyacentes al nodo actual y los almacenamos en una lista
     vecinos = GetVecinos(actual);
-    // Guardamos los nodos generados
-    generados.insert(generados.end(), vecinos.begin(), vecinos.end());
-
+    // Guardamos los nodos generados si no están ya en la lista
+    for (auto& vecino : vecinos) {
+      if (find(generados.begin(), generados.end(), vecino) == generados.end()) {
+        generados.push_back(vecino);
+      }
+    }
+    
     // Recorremos la lista de nodos adyacentes
     for (auto& vecino : vecinos) {
       if (find(cerrada.begin(), cerrada.end(), vecino) != cerrada.end() || vecino.GetEstado() == '1') {
