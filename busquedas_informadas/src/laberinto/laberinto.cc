@@ -120,6 +120,8 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
 
     // Comprobamos si el nodo actual es el objetivo
     if (actual.GetPosicion() == objetivo.GetPosicion()) { // Si el nodo actual es el objetivo almacenamos el camino optimo
+      file_out << "Nodos generados: " << generados.size() << endl; // Muestro el número de nodos generados
+      file_out << "Nodos inspeccionados: " << cerrada.size() << endl; // Muestro el número de nodos inspeccionados
       // Muestro el camino a partir de los padres de cada nodo
       MostrarCamino(file_out);
       return;
@@ -220,7 +222,7 @@ void Laberinto::MostrarCamino(ofstream& file_out) {
   }
   // Mostrar el costo total del camino
   file_out << endl << "Coste total: " << CostoTotalCamino() << endl;
-  file_out << *this;
+  file_out << *this; // Mostrar el laberinto con el camino en el archivo de salida
 }
 
 /**
