@@ -42,6 +42,8 @@ int main(int argc, char* argv[]) {
         break;
       }
       case 3: // Buscar camino
+        file_out << "Entrada: " << laberinto.GetEntrada() << endl;
+        file_out << "Salida: " << laberinto.GetSalida() << endl;
         laberinto.BusquedaAEstrella(file_out);
         cout << "Comprobar el archivo de salida" << endl;
         break;
