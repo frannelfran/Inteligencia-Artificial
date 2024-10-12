@@ -154,7 +154,9 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
       }
     }
     SetValores(abierta); // Establezco los valores calculados a los nodos del laberinto
+
     // Muestro la información de la iteración
+    file_out << "-----------------------------------" << endl;
     file_out << "Iteración: " << iteracion++ << endl;
     file_out << "Nodo actual: " << actual.GetPosicion() << endl;
     // Muestro los nodos generados
@@ -188,6 +190,7 @@ void Laberinto::MostrarCamino(ofstream& file_out) {
   }
   laberinto_[salida_.GetX()][salida_.GetY()].SetEstado('x');
   camino.push_back(actual); // Añadir el nodo inicial al camino
+
   // Imprimir el laberinto con el camino
   for (int i = 0; i < laberinto_.size(); i++) {
     for (int j = 0; j < laberinto_[i].size(); j++) {
@@ -209,6 +212,7 @@ void Laberinto::MostrarCamino(ofstream& file_out) {
   }
   // Mostrar el costo total del camino
   file_out << endl << "Coste total: " << CostoTotalCamino() << endl;
+  file_out << *this;
 }
 
 /**

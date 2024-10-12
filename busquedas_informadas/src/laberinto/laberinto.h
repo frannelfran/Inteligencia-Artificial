@@ -24,6 +24,8 @@ class Laberinto {
   // Getters
   list<Nodo> GetVecinos(const Nodo&) const; // Retorna los nodos vecinos de un nodo
   int CostoTotalCamino() const; // Retorna el costo total del camino
+  Posicion GetEntrada() const { return entrada_; } // Retorna la entrada del laberinto
+  Posicion GetSalida() const { return salida_; } // Retorna la salida del laberinto
 
   // Comprobar cosas
   bool EsPosicionValida(const Posicion&) const; // Comprueba si una posición es válida
