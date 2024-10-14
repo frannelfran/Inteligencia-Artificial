@@ -22,7 +22,6 @@ Laberinto::Laberinto(ifstream& file) {
       else if (estado == 4) this->salida_ = laberinto_[i][j].GetPosicion();
     }
   }
-  EstablecerHeuristica(); // Establecer la heurística de los nodos
 }
 
 /**
@@ -30,10 +29,16 @@ Laberinto::Laberinto(ifstream& file) {
 */
 
 void Laberinto::EstablecerHeuristica() {
+  int opcion;
+  cout << "Heurística a utilizar ?";
+  cout << endl << "[1] Distancia de Manhattan" << endl;
+  cout << "[2] Distancia Euclídea" << endl;
+  cin >> opcion;
   for (int i = 0; i < laberinto_.size(); i++) {
     for (int j = 0; j < laberinto_[i].size(); j++) {
       if (laberinto_[i][j].GetEstado() == '0' || laberinto_[i][j].GetEstado() == '3' || laberinto_[i][j].GetEstado() == '4') {
-        laberinto_[i][j].SetHN((abs(salida_.GetX() - i) + abs(salida_.GetY() - j)) * 3);
+        if (opcion == 1) laberinto_[i][j].SetHN((abs(salida_.GetX() - i) + abs(salida_.GetY() - j)) * 3);
+        if (opcion == 2) laberinto_[i][j].SetHN(sqrt(pow(salida_.GetX() - i, 2) + pow(salida_.GetY() - j, 2)) * 3);
       }
     }
   }
@@ -56,8 +61,6 @@ void Laberinto::CambiarEntrada(const Posicion& entrada) {
   laberinto_[entrada.GetX()][entrada.GetY()].SetEstado('3');
   // Actualizo la entrada
   this->entrada_ = entrada;
-  // Establezco la heurística de los nodos
-  EstablecerHeuristica();
 }
 
 /**
@@ -77,8 +80,6 @@ void Laberinto::CambiarSalida(const Posicion& salida) {
   laberinto_[salida.GetX()][salida.GetY()].SetEstado('4');
   // Actualizo la salida
   this->salida_ = salida;
-  // Establezco la heurística de los nodos
-  EstablecerHeuristica();
 }
 
 /**
@@ -101,6 +102,7 @@ void Laberinto::ResetearValores() {
 */
 
 void Laberinto::BusquedaAEstrella(ofstream& file_out) {
+  EstablecerHeuristica(); // Establezco la heurítica de los nodos
   int iteracion = 1;
   Nodo inicial = laberinto_[entrada_.GetX()][entrada_.GetY()]; // Nodo inicial
   Nodo objetivo = laberinto_[salida_.GetX()][salida_.GetY()]; // Nodo objetivo
@@ -182,6 +184,7 @@ void Laberinto::BusquedaAEstrella(ofstream& file_out) {
     }
     file_out << endl << "-----------------------------------" << endl;
   }
+  cout << "Camino no encontrado" << endl;
 }
 
 /**
