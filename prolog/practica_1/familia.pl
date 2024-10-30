@@ -57,15 +57,14 @@ hija(X, Y) :- progenitor(Y, X), femenino(X).
 nieto(X, Y) :- progenitor(Y, Z), progenitor(Z, X), masculino(X).
 nieta(X, Y) :- progenitor(Y, Z), progenitor(Z, X), femenino(X).
 
-% ¿Qué dificultades encuentras al tratar de definir reglas para los siguientes predicados con lo dado hasta ahora?
 % hermano/2, hermana/2
+hermano(X, Y) :- progenitor(Z, X), progenitor(Z, Y), masculino(X), X \= Y.
+hermana(X, Y) :- progenitor(Z, X), progenitor(Z, Y), femenino(X), X \= Y.
+
 % sobrino/2, sobrina/2
+sobrino(X, Y) :- progenitor(Z, X), hermano(Z, Y), masculino(X).
+sobrina(X, Y) :- progenitor(Z, X), hermana(Z, Y), femenino(X).
+
 % primo/2, prima/2
-
-% Dificultades:
-% - No se puede definir hermano/2, hermana/2 porque no se ha definido el concepto de hermano.
-% - No se puede definir sobrino/2, sobrina/2 porque no se ha definido el concepto de sobrino.
-% - No se puede definir primo/2, prima/2 porque no se ha definido el concepto de primo.
-
-
-
+primo(X, Y) :- progenitor(Z, X), progenitor(W, Y), hermano(Z, W), masculino(X).
+prima(X, Y) :- progenitor(Z, X), progenitor(W, Y), hermana(Z, W), femenino(X).
