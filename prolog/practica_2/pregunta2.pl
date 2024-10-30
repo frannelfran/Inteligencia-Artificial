@@ -8,5 +8,3 @@ generado_int(X, MIN, MAX) :-
   MIN < MAX,
   MIN1 is MIN + 1,
   generado_int(X, MIN1, MAX).
-
-
