@@ -1,5 +1,5 @@
 hanoi(N, L) :-
-  hanoi(N, 1, 2, 3, L). % Llama a la relación hanoi/5 con los valores iniciales.
+  hanoi(N, 1, 3, 2, L). % Llama a la relación hanoi/5 con los valores iniciales.
 
 % Caso base: si N es 0, no hay movimientos que hacer.
 hanoi(0, _, _, _, []).
@@ -9,7 +9,7 @@ hanoi(N, Origen, Destino, Auxiliar, L) :-
   N > 0, % Si N es 0, no hay movimientos que hacer.
   N1 is N - 1, % Número de discos a mover en la llamada recursiva.
   hanoi(N1, Origen, Auxiliar, Destino, L1),
-  append(L1, [mover(N, Origen, Destino)], L2),
+  append(L1, [mover(Origen, Destino)], L2),
   hanoi(N1, Auxiliar, Destino, Origen, L3),
   append(L2, L3, L).
 
@@ -44,4 +44,3 @@ hanoi_dif(N, Origen, Destino, Auxiliar, L-Tail) :-
   hanoi_dif(N1, Origen, Auxiliar, Destino, L-L1),
   L1 = [mover(Origen, Destino) | L2],
   hanoi_dif(N1, Auxiliar, Destino, Origen, L2-Tail).
-
