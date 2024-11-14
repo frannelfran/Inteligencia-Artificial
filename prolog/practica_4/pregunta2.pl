@@ -6,7 +6,6 @@ suma([Cabeza | Cola], X) :-
   suma(Cola, SumaCola),   % Llamada recursiva para la cola
   X is Cabeza + SumaCola.  % La suma total es la cabeza más la suma de la cola.
 
-
 % Archivo: suma_acc.pl
 
 % Relación suma_acc/2: calcula la suma de los elementos de la lista L usando un acumulador
