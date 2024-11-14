@@ -15,7 +15,7 @@ hanoi(N, Origen, Destino, Auxiliar, L) :-
 
 % hanoi_ACC
 hanoi_acc(N, L) :-
-  hanoi_acc(N, 1, 2, 3, [], L). % Llama a la relación hanoi_ACC/6 con los valores iniciales.
+  hanoi_acc(N, 1, 3, 2, [], L). % Llama a la relación hanoi_ACC/6 con los valores iniciales.
 
 % Caso base: si N es 0, no hay movimientos que hacer.
 hanoi_acc(0, _, _, _, Acc, Acc).
@@ -25,7 +25,7 @@ hanoi_acc(N, Origen, Destino, Auxiliar, Acc, L) :-
   N > 0, % Si N es 0, no hay movimientos que hacer.
   N1 is N - 1, % Número de discos a mover en la llamada recursiva.
   hanoi_acc(N1, Origen, Auxiliar, Destino, Acc, L1),
-  append(L1, [mover(N, Origen, Destino)], L2),
+  append(L1, [mover(Origen, Destino)], L2),
   hanoi_acc(N1, Auxiliar, Destino, Origen, L2, L).
 
 % hanoi_dif
