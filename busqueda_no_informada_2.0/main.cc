@@ -1,5 +1,5 @@
-#include "nodo/nodo.h"
-#include "grafo/grafo.h"
+#include "src/nodo/nodo.h"
+#include "src/grafo/grafo.h"
 
 vector<vector<double>> MatrizCoste(ifstream& file) {
   double coste;
