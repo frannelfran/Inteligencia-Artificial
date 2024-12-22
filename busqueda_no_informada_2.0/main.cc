@@ -1,33 +1,38 @@
 #include "src/nodo/nodo.h"
 #include "src/grafo/grafo.h"
-
-vector<vector<double>> MatrizCoste(ifstream& file) {
-  double coste;
-  int num_nodos;
-  file >> num_nodos;
-  vector<vector<double>> matriz(num_nodos, vector<double>(num_nodos, 0));
-  for (int i = 0; i < num_nodos; i++) {
-    for (int j = i + 1; j < num_nodos; j++) {
-      file >> coste;
-      if (coste != -1) {
-        matriz[i][j] = coste;
-        matriz[j][i] = coste;
-      }
-    }
-  }
-  return matriz;
-}
+#include "src/tools/tools.h"
 
 int main(int argc, char* argv[]) {
-  ifstream file(argv[1]);
-  vector<vector<double>> matriz = MatrizCoste(file);
+  Tools options = parse_args(argc, argv);
 
-  // Crear grafo
+  // Fichero de entrada, salida y nodos inicial y final
+  ifstream file(options.fichero_entrada);
+  ofstream output(options.fichero_salida);
+  Nodo inicial(options.NodoInicial);
+  Nodo final(options.NodoFinal);
+
+  // Matriz de costes
+  vector<vector<double>> matriz = MatrizCoste(file);
+  // Creación del grafo
   Grafo grafo(matriz);
-  cout << grafo;
-  Nodo inicial(15);
-  Nodo final(1);
-  grafo.RecorridoProfundidad(inicial, final);
-  
-  return 0;
+
+  int opcion;
+
+  while (true) {
+    cout << "1. Recorrido en profundidad" << endl;
+    cout << "2. Salir" << endl;
+    cout << "Introducir opción: ";
+    cin >> opcion;
+
+    switch (opcion) {
+      case 1:
+        grafo.RecorridoProfundidad(inicial, final);
+        break;
+      case 2:
+        return 0;
+      default:
+        cout << "Opción no válida" << endl;
+
+    }
+  }
 }
