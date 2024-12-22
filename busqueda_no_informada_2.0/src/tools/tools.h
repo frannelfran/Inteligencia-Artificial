@@ -39,4 +39,5 @@ Tools parse_args(int argc, char* argv[]) {
   tools.fichero_salida = argv[2];
   tools.NodoInicial = stoi(argv[3]);
   tools.NodoFinal = stoi(argv[4]);
+  return tools;
 }
