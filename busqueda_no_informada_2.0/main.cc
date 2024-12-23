@@ -8,6 +8,8 @@ int main(int argc, char* argv[]) {
   // Fichero de entrada, salida
   ifstream input(options.fichero_entrada);
   ofstream output(options.fichero_salida);
+  Nodo inicial(options.NodoInicial);
+  Nodo final(options.NodoFinal);
 
   // Matriz de costes
   vector<vector<double>> matriz = MatrizCoste(input);
@@ -26,26 +28,24 @@ int main(int argc, char* argv[]) {
     cin >> opcion;
 
     switch (opcion) {
-      case 1: {
-        Nodo inicial(options.NodoInicial);
-        Nodo final(options.NodoFinal);
+      case 1:
         grafo.RecorridoProfundidad(inicial, final, output);
         cout << "Comprobar fichero de salida" << endl;
         break;
-      }
       case 2:
         return 0;
       case 3:
         cout << "Introducir nodo inicial: ";
         cin >> options.NodoInicial;
+        inicial = Nodo(options.NodoInicial); // Establezco el nuevo nodo inicial
         cout << "Introducir nodo final: ";
         cin >> options.NodoFinal;
+        final = Nodo(options.NodoFinal); // Establezco el nuevo nodo final
         break;
       case 4:
         return 0;
       default:
         cout << "Opción no válida" << endl;
-
     }
   }
   
