@@ -20,21 +20,21 @@ int main(int argc, char* argv[]) {
   int opcion;
 
   while (true) {
+    cout << "--- Menú ---" << endl;
     cout << "1. Recorrido en profundidad" << endl;
     cout << "2. Recorrido en amplitud" << endl;
     cout << "3. Cambiar nodos inicial y final" << endl;
-    cout << "4. Salir" << endl;
+    cout << "4. Mostrar grafo" << endl;
+    cout << "5. Salir" << endl;
     cout << "Introducir opción: ";
     cin >> opcion;
 
     switch (opcion) {
       case 1:
         grafo.RecorridoProfundidad(inicial, final, output);
-        cout << "Comprobar fichero de salida" << endl;
         break;
       case 2:
         grafo.RecorridoAmplitud(inicial, final, output);
-        cout << "Comprobar fichero de salida" << endl;
         break;
       case 3:
         cout << "Introducir nodo inicial: ";
@@ -45,6 +45,9 @@ int main(int argc, char* argv[]) {
         final = Nodo(options.NodoFinal); // Establezco el nuevo nodo final
         break;
       case 4:
+        cout << grafo;
+        break;
+      case 5:
         return 0;
       default:
         cout << "Opción no válida" << endl;

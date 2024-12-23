@@ -123,6 +123,7 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
         camino_inverso.pop();
       }
       file << "\nCoste: " << coste_total << endl;
+      cout << "Comprobar fichero de salida" << endl;
       return;
     }
 
