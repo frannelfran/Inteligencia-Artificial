@@ -6,13 +6,13 @@ int main(int argc, char* argv[]) {
   Tools options = parse_args(argc, argv);
 
   // Fichero de entrada, salida y nodos inicial y final
-  ifstream file(options.fichero_entrada);
+  ifstream input(options.fichero_entrada);
   ofstream output(options.fichero_salida);
   Nodo inicial(options.NodoInicial);
   Nodo final(options.NodoFinal);
 
   // Matriz de costes
-  vector<vector<double>> matriz = MatrizCoste(file);
+  vector<vector<double>> matriz = MatrizCoste(input);
   // Creación del grafo
   Grafo grafo(matriz);
 
@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     switch (opcion) {
       case 1:
-        grafo.RecorridoProfundidad(inicial, final);
+        grafo.RecorridoProfundidad(inicial, final, output);
         break;
       case 2:
         return 0;
@@ -35,4 +35,8 @@ int main(int argc, char* argv[]) {
 
     }
   }
+  
+  // Cerramos ficheros
+  input.close();
+  output.close();
 }
