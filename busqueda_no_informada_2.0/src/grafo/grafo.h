@@ -2,6 +2,7 @@
 #include "../nodo/nodo.h"
 #include <fstream>
 #include <stack> // Para el recorrido en profundidad
+#include <queue> // Para el recorrido en amplitud
 #include <set>
 #include <map>
 #include <random>
@@ -19,6 +20,7 @@ class Grafo {
   void MostrarIteracion(const int& iteracion, const vector<int>& generados, const vector<int>& inspeccionados, ofstream& file) const; // Mostrar la iteración actual
   inline void InsertarNodo(const Nodo& nodo) { grafo_.insert({nodo, nodo.GetHijos()}); } // Inserta un nodo en el grafo
   void RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
+  void RecorridoAmplitud(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en amplitud
   
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Grafo& grafo) {

@@ -63,6 +63,7 @@ void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados,
  * @brief Función que realiza un recorrido en profundidad
  * @param inicial Nodo inicial
  * @param final Nodo final
+ * @param file Fichero de salida
 */
 
 void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
@@ -143,5 +144,85 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
   }
 
   // Si no se encontró un camino
+  cout << "No se encontró un camino al nodo final." << endl;
+}
+
+/**
+ * @brief Función que realiza un recorrido en amplitud
+ * @param inicial Nodo inicial
+ * @param final Nodo final
+ * @param file Fichero de salida
+*/
+
+void Grafo::RecorridoAmplitud(Nodo& inicial, Nodo& final, ofstream& file) {
+  queue<Nodo*> cola; // Cola para realizar el recorrido en amplitud
+  set<Nodo> visitados; // Conjunto de nodos visitados
+  map<int, pair<Nodo*, double>> camino; // Camino recorrido (padre y coste)
+  vector<int> inspeccionados, generados = {inicial.GetId()};
+  double coste_total = 0.0;
+  int iteracion = 1;
+
+  // Información inicial
+  file << "Número de nodos: " << num_nodos_ << endl;
+  file << "Número de aristas: " << num_aristas_ << endl;
+  file << "Vertice origen: " << inicial.GetId() << endl;
+  file << "Vertice destino: " << final.GetId() << endl;
+  file << "---------------------------------------------" << endl;
+  file << "Iteración " << iteracion << endl;
+  file << "Generados: " << inicial.GetId() << endl;
+  file << "Inspeccionados: -" << endl;
+  file << "---------------------------------------------" << endl;
+
+  Nodo* nodo_inicial = nullptr;
+  Nodo* nodo_final = nullptr;
+
+  // Buscamos el nodo en el grafo
+  for (auto& par : grafo_) {
+    if (par.first.GetId() == inicial.GetId()) nodo_inicial = const_cast<Nodo*>(&par.first);
+    if (par.first.GetId() == final.GetId()) nodo_final = const_cast<Nodo*>(&par.first);
+  }
+
+  cola.push(nodo_inicial);
+  visitados.insert(inicial);
+
+  while (!cola.empty()) {
+    Nodo* actual = cola.front();
+    cola.pop();
+    inspeccionados.push_back(actual->GetId());
+
+    // Si se alcanza el nodo final, reconstruimos el camino
+    if (actual->GetId() == nodo_final->GetId()) {
+      stack<Nodo*> camino_inverso;
+      for (Nodo* nodo = nodo_final; nodo != nodo_inicial; nodo = camino[nodo->GetId()].first) {
+        camino_inverso.push(nodo);
+        coste_total += camino[nodo->GetId()].second;
+      }
+      camino_inverso.push(nodo_inicial);
+
+      // Muestro el camino y coste total
+      MostrarIteracion(iteracion++, generados, inspeccionados, file);
+      file << "Camino: ";
+      while (!camino_inverso.empty()) {
+        file << camino_inverso.top()->GetId() << " ";
+        camino_inverso.pop();
+      }
+      file << "\nCoste: " << coste_total << endl;
+      return;
+    }
+
+    // Obtener hijos del nodo actual y procesarlos
+    vector<pair<Nodo*, double>> hijos = actual->GetHijos();
+    for (auto it = hijos.begin(); it != hijos.end(); it++) {
+      if (!visitados.count(it->first->GetId())) {
+        cola.push(it->first);
+        visitados.insert(it->first->GetId());
+        camino[it->first->GetId()] = {actual, it->second};
+        generados.push_back(it->first->GetId());
+      }
+    }
+
+    // Mostrar estado de la iteración
+    MostrarIteracion(iteracion++, generados, inspeccionados, file);
+  }
   cout << "No se encontró un camino al nodo final." << endl;
 }

@@ -33,7 +33,9 @@ int main(int argc, char* argv[]) {
         cout << "Comprobar fichero de salida" << endl;
         break;
       case 2:
-        return 0;
+        grafo.RecorridoAmplitud(inicial, final, output);
+        cout << "Comprobar fichero de salida" << endl;
+        break;
       case 3:
         cout << "Introducir nodo inicial: ";
         cin >> options.NodoInicial;
