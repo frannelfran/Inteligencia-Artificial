@@ -20,6 +20,8 @@ Grafo::Grafo(const vector<vector<double>>& matriz) {
     }
     InsertarNodo(*nodos[i]);
   }
+  num_nodos_ = nodos.size();
+  num_aristas_ = grafo_.size() - 1;
 }
 
 /**
@@ -44,17 +46,17 @@ Grafo::~Grafo() {
  * @param inspeccionados Nodos inspeccionados
 */
 
-void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados, const vector<int>& inspeccionados) const {
-  cout << "Iteración " << iteracion << endl;
-  cout << "Generados: ";
+void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados, const vector<int>& inspeccionados, ofstream& file) const {
+  file << "Iteración " << iteracion << endl;
+  file << "Generados: ";
   for (auto id : generados) {
-    cout << id << " ";
+    file << id << " ";
   }
-  cout << "\nInspeccionados: ";
+  file << "\nInspeccionados: ";
   for (auto id : inspeccionados) {
-    cout << id << " ";
+    file << id << " ";
   }
-  cout << "\n---------------------------------------------" << endl;
+  file << "\n---------------------------------------------" << endl;
 }
 
 /**
@@ -63,7 +65,7 @@ void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados,
  * @param final Nodo final
 */
 
-void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final) {
+void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
   stack<Nodo*> pila; // Pila para realizar el recorrido en profundidad
   set<Nodo> visitados; // Conjunto de nodos visitados
   map<int, pair<Nodo*, double>> camino; // Camino recorrido (padre y coste)
@@ -72,10 +74,15 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final) {
   int iteracion = 1;
 
   // Información inicial
-  cout << "Iteración " << iteracion << endl;
-  cout << "Generados: " << inicial.GetId() << endl;
-  cout << "Inspeccionados: -" << endl;
-  cout << "---------------------------------------------" << endl;
+  file << "Número de nodos: " << num_nodos_ << endl;
+  file << "Número de aristas: " << num_aristas_ << endl;
+  file << "Vertice origen: " << inicial.GetId() << endl;
+  file << "Vertice destino: " << final.GetId() << endl;
+  file << "---------------------------------------------" << endl;
+  file << "Iteración " << iteracion << endl;
+  file << "Generados: " << inicial.GetId() << endl;
+  file << "Inspeccionados: -" << endl;
+  file << "---------------------------------------------" << endl;
 
   // Para los nodos random
   //random_device rd;
@@ -108,13 +115,13 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final) {
       camino_inverso.push(nodo_inicial);
 
       // Muestro el camino y coste total
-      MostrarIteracion(iteracion++, generados, inspeccionados);
-      cout << "Camino: ";
+      MostrarIteracion(iteracion++, generados, inspeccionados, file);
+      file << "Camino: ";
       while (!camino_inverso.empty()) {
-        cout << camino_inverso.top()->GetId() << " ";
+        file << camino_inverso.top()->GetId() << " ";
         camino_inverso.pop();
       }
-      cout << "\nCoste: " << coste_total << endl;
+      file << "\nCoste: " << coste_total << endl;
       return;
     }
 
@@ -132,7 +139,7 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final) {
     }
 
     // Mostrar estado de la iteración
-    MostrarIteracion(iteracion++, generados, inspeccionados);
+    MostrarIteracion(iteracion++, generados, inspeccionados, file);
   }
 
   // Si no se encontró un camino
