@@ -21,6 +21,7 @@ class Grafo {
   inline void InsertarNodo(const Nodo& nodo) { grafo_.insert({nodo, nodo.GetHijos()}); } // Inserta un nodo en el grafo
   void RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
   void RecorridoAmplitud(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en amplitud
+  bool EstaEnOtraRama(Nodo* nodo, Nodo* padre, map<int, pair<Nodo*, double>>& camino); // Comprueba si un nodo está en otra rama
   
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Grafo& grafo) {
