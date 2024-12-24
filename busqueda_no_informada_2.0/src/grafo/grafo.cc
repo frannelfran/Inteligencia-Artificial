@@ -86,8 +86,8 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
   file << "---------------------------------------------" << endl;
 
   // Para los nodos random
-  //random_device rd;
-  //mt19937 gen(rd());
+  // random_device rd;
+  // mt19937 gen(rd());
 
   Nodo* nodo_inicial = nullptr;
   Nodo* nodo_final = nullptr;
@@ -116,10 +116,13 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
       camino_inverso.push(nodo_inicial);
 
       // Muestro el camino y coste total
-      MostrarIteracion(iteracion++, generados, inspeccionados, file);
+      MostrarIteracion(++iteracion, generados, inspeccionados, file);
       file << "Camino: ";
       while (!camino_inverso.empty()) {
-        file << camino_inverso.top()->GetId() << " ";
+        file << camino_inverso.top()->GetId();
+        if (camino_inverso.size() > 1) {
+          file << " -> ";
+        }
         camino_inverso.pop();
       }
       file << "\nCoste: " << coste_total << endl;
@@ -130,18 +133,28 @@ void Grafo::RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file) {
     // Obtener hijos del nodo actual y procesarlos
     vector<pair<Nodo*, double>> hijos = actual->GetHijos();
     
-    // shuffle(hijos.begin(), hijos.end(), gen); escoger hijos random
+    // shuffle(hijos.begin(), hijos.end(), gen); // escoger hijos random
     for (auto it = hijos.rbegin(); it != hijos.rend(); it++) {
-      if (!visitados.count(it->first->GetId())) {
-        pila.push(it->first);
-        visitados.insert(it->first->GetId());
-        camino[it->first->GetId()] = {actual, it->second};
-        generados.push_back(it->first->GetId());
+      Nodo* hijo = it->first;
+      double coste = it->second;
+
+      // Verificar si el nodo está en otra rama
+      if (EstaEnOtraRama(hijo, actual, camino)) {
+        pila.push(hijo);
+        camino[hijo->GetId()] = {actual, coste};
+        generados.push_back(hijo->GetId());
+        visitados.insert(*hijo);
+      } else if (visitados.find(*hijo) == visitados.end()) {
+        // Procesar nodos no visitados
+        pila.push(hijo);
+        camino[hijo->GetId()] = {actual, coste};
+        generados.push_back(hijo->GetId());
+        visitados.insert(*hijo);
       }
     }
 
     // Mostrar estado de la iteración
-    MostrarIteracion(iteracion++, generados, inspeccionados, file);
+    MostrarIteracion(++iteracion, generados, inspeccionados, file);
   }
 
   // Si no se encontró un camino
@@ -226,4 +239,26 @@ void Grafo::RecorridoAmplitud(Nodo& inicial, Nodo& final, ofstream& file) {
     MostrarIteracion(iteracion++, generados, inspeccionados, file);
   }
   cout << "No se encontró un camino al nodo final." << endl;
+}
+
+/**
+ * @brief Función que comprueba si un nodo está en otra rama
+ * @param nodo Nodo a comprobar
+ * @param padre Nodo padre
+ * @param camino Camino recorrido
+ * @return true si está en otra rama, false en caso contrario
+*/
+
+bool Grafo::EstaEnOtraRama(Nodo* nodo, Nodo* padre, map<int, pair<Nodo*, double>>& camino) {
+  Nodo* actual = padre;
+  while (actual != nullptr) {
+    if (actual->GetId() == nodo->GetId()) {
+      return false; // El nodo está en la misma rama
+    }
+    if (camino.find(actual->GetId()) == camino.end()) {
+      break; // No hay más padres en el camino actual
+    }
+    actual = camino[actual->GetId()].first;
+  }
+  return true; // El nodo no está en la misma rama
 }
