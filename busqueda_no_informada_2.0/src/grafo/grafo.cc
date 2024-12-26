@@ -112,20 +112,18 @@ void Grafo::RecorridoAmplitud(Nodo& final, ofstream& file) {
 */
 
 void Grafo::MostrarCamino(Nodo* nodo, ofstream& file) {
-  stack<Nodo*> camino;
+  vector<Nodo*> camino;
   Nodo* aux = nodo;
   while (aux != nullptr) {
-    camino.push(aux);
+    camino.push_back(aux);
     aux = aux->GetPadre();
   }
   file << "Camino: ";
-  while (!camino.empty()) {
-    if (camino.size() == 1) {
-      file << camino.top()->GetId();
-    } else {
-      file << camino.top()->GetId() << " -> ";
+  for (int i = camino.size() - 1; i >= 0; i--) {
+    file << camino[i]->GetId() << " ";
+    if (i != 0) {
+      file << "-> ";
     }
-    camino.pop();
   }
   file << endl;
 }
@@ -137,26 +135,19 @@ void Grafo::MostrarCamino(Nodo* nodo, ofstream& file) {
 */
 
 double Grafo::CalcularCosteTotal(Nodo* nodo) {
-  stack<Nodo*> camino;
+  vector<Nodo*> camino;
   Nodo* aux = nodo;
   double coste_total = 0.0;
 
   while (aux != nullptr) {
-    camino.push(aux);
+    camino.push_back(aux);
     aux = aux->GetPadre();
   }
 
-  while (!camino.empty()) {
-    Nodo* actual = camino.top();
-    camino.pop();
-    // Si hay un nodo padre, buscar el coste de la conexión
-    if (!camino.empty()) {
-      Nodo* siguiente = camino.top(); // El siguiente nodo en el camino
-      for (const auto& hijo : grafo_[actual->GetId()]) {
-        if (hijo.first == siguiente->GetId()) {
-          coste_total += hijo.second; // Sumar el coste de la conexión
-          break;
-        }
+  for (int i = camino.size() - 1; i > 0; i--) {
+    for (auto& hijo : grafo_[camino[i]->GetId()]) {
+      if (hijo.first == camino[i - 1]->GetId()) {
+        coste_total += hijo.second;
       }
     }
   }
