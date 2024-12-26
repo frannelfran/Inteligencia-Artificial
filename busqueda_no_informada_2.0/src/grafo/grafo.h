@@ -20,7 +20,7 @@ class Grafo {
 
   // Funciones
   void MostrarIteracion(const int& iteracion, const vector<int>& generados, const vector<int>& inspeccionados, ofstream& file) const; // Mostrar la iteración actual
-  //void RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
+  void RecorridoProfundidad(Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
   void RecorridoAmplitud(Nodo& final, ofstream& file); // Realiza un recorrido en amplitud
   bool EstaEnRama(Nodo* padre, Nodo* nodo); // Comprueba si un nodo esta en la misma rama que su padre
   void MostrarCamino(Nodo* nodo, ofstream& file); // Muestra el camino desde el nodo inicial hasta el nodo final

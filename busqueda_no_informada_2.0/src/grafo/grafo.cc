@@ -47,6 +47,71 @@ void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados,
 }
 
 /**
+ * @brief Función que realiza un recorrido en profundidad
+ * @param inicial Nodo inicial
+ * @param final Nodo final
+ * @param file Fichero de salida
+*/
+
+
+void Grafo::RecorridoProfundidad(Nodo& final, ofstream& file) {
+  stack<Nodo*> pila;
+  vector<int> generados;
+  vector<int> visitados;
+  int iteracion = 1;
+
+  // Muestro la información inicial
+  file << "Número de nodos: " << num_nodos_ << endl;
+  file << "Número de aristas: " << num_aristas_ << endl;
+  file << "Vértice origen: " << raiz_->GetId() << endl;
+  file << "Vértice destino: " << final.GetId() << endl;
+  file << "---------------------------------------------" << endl;
+  // Iteracción inicial
+  file << "Iteración " << iteracion << endl;
+  file << "Generados: " << raiz_->GetId() << endl;
+  file << "Inspeccionados: -" << endl;
+  file << "---------------------------------------------" << endl;
+
+  // Añadimos el nodo inicial a la pila
+  pila.push(raiz_);
+
+  while (!pila.empty()) {
+    Nodo* actual = pila.top();
+    pila.pop();
+    // Visito el nodo actual
+    visitados.push_back(actual->GetId());
+
+    // Compruebo si es el nodo final
+    if (actual->GetId() == final.GetId()) {
+      generados.push_back(actual->GetId());
+      MostrarIteracion(++iteracion, generados, visitados, file);
+      // Muestro el camino
+      MostrarCamino(actual, file);
+      
+      // Calculo el coste total
+      file << "Coste total: " << CalcularCosteTotal(actual) << endl;
+      return;
+    }
+
+    // Para cada hijo del nodo actual
+    vector<pair<int, double>> hijos = grafo_[actual->GetId()];
+
+
+    for (auto it = hijos.rbegin(); it != hijos.rend(); it++) {
+      pair<int, double> hijos = *it; // Hijos del nodo actual
+
+      Nodo* hijo = new Nodo(hijos.first);
+      hijo->SetPadre(actual);
+      if (!EstaEnRama(hijo, actual) || find(visitados.begin(), visitados.end(), hijo->GetId()) == visitados.end()) {
+        pila.push(hijo);
+        generados.push_back(hijo->GetId());
+      }
+    }
+    MostrarIteracion(++iteracion, generados, visitados, file);
+  }
+}
+
+/**
  * @brief Función que realiza un recorrido en amplitud
  * @param inicial Nodo inicial
  * @param final Nodo final
