@@ -25,6 +25,9 @@ class Grafo {
   bool EstaEnRama(Nodo* padre, Nodo* nodo); // Comprueba si un nodo esta en la misma rama que su padre
   void MostrarCamino(Nodo* nodo, ofstream& file); // Muestra el camino desde el nodo inicial hasta el nodo final
   double CalcularCosteTotal(Nodo* nodo); // Calcula el coste total de un camino
+
+  // Setters
+  inline void CambiarRaiz(const Nodo& raiz) { delete raiz_, raiz_ = new Nodo(raiz.GetId()); }
   
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Grafo& grafo) {
