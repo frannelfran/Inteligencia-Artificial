@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
   vector<vector<double>> matriz = MatrizCoste(input);
 
   // Creación del grafo
-  Grafo grafo(matriz);
+  Grafo grafo(matriz, inicial);
 
   int opcion;
 
@@ -31,15 +31,18 @@ int main(int argc, char* argv[]) {
 
     switch (opcion) {
       case 1:
-        grafo.RecorridoProfundidad(inicial, final, output);
+        // grafo.RecorridoProfundidad(inicial, final, output);
+        cout << "Función no implementada" << endl;
         break;
       case 2:
-        grafo.RecorridoAmplitud(inicial, final, output);
+        grafo.RecorridoAmplitud(final, output);
+        cout << "Consultar fichero de salida" << endl;
         break;
       case 3:
         cout << "Introducir nodo inicial: ";
         cin >> options.NodoInicial;
         inicial = Nodo(options.NodoInicial); // Establezco el nuevo nodo inicial
+        grafo.CambiarRaiz(inicial); // Cambio la raíz del grafo
         cout << "Introducir nodo final: ";
         cin >> options.NodoFinal;
         final = Nodo(options.NodoFinal); // Establezco el nuevo nodo final
