@@ -6,20 +6,24 @@ using namespace std;
 
 class Nodo {
  public:
+  // Constructor
   Nodo() = default;
-  Nodo(const int& id) : id_(id) {}
+  Nodo(const int& id) : id(id), padre_(nullptr) {}
+
+  // Destructor
+  ~Nodo() = default;
 
   // Getters
-  int GetId() const { return id_; }
-  vector<int> GetHijos() const { return hijos_; }
+  int GetId() const { return id; }
+  Nodo* GetPadre() const { return padre_; }
 
   // Setters
-  void AddHijo(const int& hijo) { hijos_.push_back(hijo); }
+  void SetPadre(Nodo* padre) { padre_ = padre; }
 
-  // Sobrecarga de operadores
-  bool operator<(const Nodo& nodo) const { return id_ < nodo.id_; }
+  bool operator<(const Nodo& nodo) const { return id < nodo.id; }
+  bool operator==(const Nodo& nodo) const { return id == nodo.id; }
 
  private:
-  int id_; // Identificador del nodo
-  vector<int> hijos_; // Hijos del nodo
+  int id;
+  Nodo* padre_;
 };
