@@ -31,8 +31,8 @@ int main(int argc, char* argv[]) {
 
     switch (opcion) {
       case 1:
-        // grafo.RecorridoProfundidad(inicial, final, output);
-        cout << "Función no implementada" << endl;
+        grafo.RecorridoProfundidad(final, output);
+        cout << "Consultar fichero de salida" << endl;
         break;
       case 2:
         grafo.RecorridoAmplitud(final, output);
