@@ -3,6 +3,7 @@
 /**
  * @brief Constructor de la clase Grafo
  * @param matriz Matriz de costes
+ * @param raiz Nodo raíz
 */
 
 Grafo::Grafo(const vector<vector<double>>& matriz, const Nodo& raiz) {
@@ -48,11 +49,9 @@ void Grafo::MostrarIteracion(const int& iteracion, const vector<int>& generados,
 
 /**
  * @brief Función que realiza un recorrido en profundidad
- * @param inicial Nodo inicial
  * @param final Nodo final
  * @param file Fichero de salida
 */
-
 
 void Grafo::RecorridoProfundidad(Nodo& final, ofstream& file) {
   stack<Nodo*> pila;
@@ -109,6 +108,7 @@ void Grafo::RecorridoProfundidad(Nodo& final, ofstream& file) {
     }
     MostrarIteracion(++iteracion, generados, visitados, file);
   }
+  cout << "No se ha encontrado el nodo final" << endl;
 }
 
 /**
@@ -168,6 +168,8 @@ void Grafo::RecorridoAmplitud(Nodo& final, ofstream& file) {
     }
     MostrarIteracion(++iteracion, generados, visitados, file);
   }
+
+  cout << "No se ha encontrado el nodo final" << endl;
 }
 
 /**
