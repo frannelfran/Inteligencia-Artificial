@@ -11,28 +11,36 @@
 class Grafo {
  public:
   // Constructor
-  Grafo(const vector<vector<double>>&);
+  Grafo(const vector<vector<double>>& matriz, const Nodo& raiz);
 
   // Destructor
-  ~Grafo();
+  ~Grafo() {
+    delete raiz_;
+  }
 
   // Funciones
   void MostrarIteracion(const int& iteracion, const vector<int>& generados, const vector<int>& inspeccionados, ofstream& file) const; // Mostrar la iteración actual
-  inline void InsertarNodo(const Nodo& nodo) { grafo_.insert({nodo, nodo.GetHijos()}); } // Inserta un nodo en el grafo
-  void RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
-  void RecorridoAmplitud(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en amplitud
-  bool EstaEnOtraRama(Nodo* nodo, Nodo* padre, map<int, pair<Nodo*, double>>& camino); // Comprueba si un nodo está en otra rama
+  //void RecorridoProfundidad(Nodo& inicial, Nodo& final, ofstream& file); // Realiza un recorrido en profundidad
+  void RecorridoAmplitud(Nodo& final, ofstream& file); // Realiza un recorrido en amplitud
+  bool EstaEnRama(Nodo* padre, Nodo* nodo); // Comprueba si un nodo esta en la misma rama que su padre
+  void MostrarCamino(Nodo* nodo, ofstream& file); // Muestra el camino desde el nodo inicial hasta el nodo final
+  double CalcularCosteTotal(Nodo* nodo); // Calcula el coste total de un camino
   
   // Sobrecarga de operadores
   friend ostream& operator<<(ostream& os, const Grafo& grafo) {
     for (auto& nodo : grafo.grafo_) {
-      os << nodo.first << endl;
+      os << nodo.first << " -> ";
+      for (auto& hijo : nodo.second) {
+        os << hijo.first << "(" << hijo.second << ") ";
+      }
+      os << endl;
     }
     return os;
   }
 
  private:
-  map<Nodo, vector<pair<Nodo*, double>>> grafo_;
+  map<int, vector<pair<int, double>>> grafo_;
+  Nodo* raiz_;
   int num_nodos_;
-  int num_aristas_;
+  int num_aristas_ = 0;
 };
