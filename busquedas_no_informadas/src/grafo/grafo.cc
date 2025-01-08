@@ -94,8 +94,7 @@ void Grafo::RecorridoProfundidad(Nodo& final, ofstream& file) {
 
     // Para cada hijo del nodo actual
     vector<pair<int, double>> hijos = grafo_[actual->GetId()];
-
-
+    
     for (auto it = hijos.rbegin(); it != hijos.rend(); it++) {
       pair<int, double> hijos = *it; // Hijos del nodo actual
 
@@ -223,8 +222,8 @@ double Grafo::CalcularCosteTotal(Nodo* nodo) {
 
 /**
  * @brief Función que comprueba si un nodo está en otra rama
- * @param nodo Nodo a comprobar
- * @param padre Nodo padre
+ * @param hijo Nodo a comprobar
+ * @param nodo Nodo actual
  * @param camino Camino recorrido
  * @return true si está en otra rama, false en caso contrario
 */
