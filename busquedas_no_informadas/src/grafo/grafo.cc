@@ -159,6 +159,7 @@ void Grafo::RecorridoAmplitud(Nodo& final, ofstream& file) {
     // Para cada hijo del nodo actual
     for (auto& hijos : grafo_[actual->GetId()]) {
       Nodo* hijo = new Nodo(hijos.first);
+      
       hijo->SetPadre(actual);
       if (!EstaEnRama(hijo, actual) || find(visitados.begin(), visitados.end(), hijo->GetId()) == visitados.end()) {
         cola.push(hijo);

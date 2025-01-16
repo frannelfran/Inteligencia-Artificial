@@ -51,13 +51,12 @@ int main(int argc, char* argv[]) {
         cout << grafo;
         break;
       case 5:
+        // Cerramos ficheros
+        input.close();
+        output.close();
         return 0;
       default:
         cout << "Opción no válida" << endl;
     }
   }
-  
-  // Cerramos ficheros
-  input.close();
-  output.close();
 }
